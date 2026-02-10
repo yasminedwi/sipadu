@@ -45,11 +45,44 @@
 
 <body class="dashboard-page">
 
-  <div class="top-bar">
+  <!-- TOP BAR / NAV LAYER -->
+  <header class="top-bar" id="topBar">
+
+    <!-- ADMIN AREA -->
+    <div id="adminArea">
+      <button class="admin-btn"
+        onclick="window.location.href='admin-page.html'">
+        ADMIN
+      </button>
+    </div>
+
+    <img src="../css/images/logo-dpmptsp-v-footer.png"
+         class="logo-mini" alt="Logo DPMPTSP">
+    <img src="../css/images/Lambang_Kota_Kendari.png"
+         class="logo-kota" alt="Logo Kota Kendari">
+
     <nav>
-      <button class="nav-btn active">Input Pegawai Baru</button>
+      <button class="nav-btn active"
+        onclick="window.location.href='all-read-dashboard.html'">
+        BERANDA
+      </button>
+
+      <button class="nav-btn1"
+        onclick="window.location.href='all-edit-pengaturan-akun.html'">
+        AKUN
+      </button>
+
+      <button class="nav-btn2"
+        onclick="window.location.href='all-konfirmasi-logout.html'">
+        KELUAR
+      </button>
     </nav>
-  </div>
+  </header>
+
+  <!-- CONTENT LAYERS -->
+  <div class="content1"></div>
+  <div class="content2"></div>
+  <div class="content3"></div>
 
   <div class="content">
     <h2>INPUT PEGAWAI BARU</h2>
@@ -84,14 +117,22 @@
 
         <!-- KANAN -->
         <div>
-          <label>Gol Jabatan</label>
-          <input type="text" name="gol_jabatan">
+          <label>TMT Jabatan</label>
+          <input type="date" name="tmt_jabatan">
 
           <label>Jenis Kelamin</label>
-          <input type="text" name="jenis_kelamin">
+          <select name="jenis_kelamin" required>
+            <option value="">-- Pilih Jenis Kelamin --</option>
+            <option value="Perempuan">Perempuan</option>
+            <option value="Laki-laki">Laki-laki</option>
+          </select>
 
           <label>Masa Kerja</label>
-          <input type="number" name="masa_kerja">
+          <div style="display: flex; gap: 10px;">
+            <input type="number" name="masa_kerja_tahun" placeholder="Tahun" min="0">
+            <input type="number" name="masa_kerja_bulan" placeholder="Bulan" min="0" max="11">
+          </div>
+
 
           <label>Diklat Penunjang</label>
           <input type="text" name="diklat">
@@ -99,8 +140,8 @@
           <label>Ijazah Terakhir</label>
           <input type="text" name="ijazah">
 
-          <label>Keluarga</label>
-          <input type="text" name="keluarga">
+          <label>Usia</label>
+          <input type="number" name="keluarga" placeholder="Tahun" min="0">
 
           <label>Password</label>
           <input type="password" name="password" required>

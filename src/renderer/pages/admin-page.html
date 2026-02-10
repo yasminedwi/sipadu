@@ -7,18 +7,29 @@
 </head>
 <body class="admin-page">
 
-  <header class="top-bar">
+  <!-- TOP BAR / NAV LAYER -->
+  <header class="top-bar" id="topBar">
+
+    <!-- ADMIN AREA -->
+    <div id="adminArea">
+      <button class="admin-btn"
+        onclick="window.location.href='admin-page.html'">
+        ADMIN
+      </button>
+    </div>
+
     <img src="../css/images/logo-dpmptsp-v-footer.png"
-         class="logo"
-         style="width: 60px; height: 60px; margin-left: 30%;">
+         class="logo-mini" alt="Logo DPMPTSP">
+    <img src="../css/images/Lambang_Kota_Kendari.png"
+         class="logo-kota" alt="Logo Kota Kendari">
 
     <nav>
       <button class="nav-btn active"
-        onclick="window.location.href='admin-page.html'">
+        onclick="window.location.href='all-read-dashboard.html'">
         BERANDA
       </button>
 
-      <button class="nav-btn"
+      <button class="nav-btn1"
         onclick="window.location.href='all-edit-pengaturan-akun.html'">
         AKUN
       </button>
@@ -30,9 +41,10 @@
     </nav>
   </header>
 
-  <!-- background layer -->
-  <main class="content2"></main>
-  <main class="content3"></main>
+  <!-- CONTENT LAYERS -->
+  <div class="content1"></div>
+  <div class="content2"></div>
+  <div class="content3"></div>
 
   <!-- konten utama -->
   <main class="content">
