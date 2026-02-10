@@ -6,7 +6,7 @@ const filePath = path.join(__dirname, "../../data", "users.json");
 
 function loadUsers() {
   if (!fs.existsSync(filePath)) return [];
-  return JSON.parse(fs.readFileSync(filePath));
+  return JSON.parse(fs.readFileSync(filePath, "utf-8"));
 }
 
 function login() {
@@ -29,16 +29,17 @@ function login() {
     return;
   }
 
+  // store logged-in user (used by dashboard)
   localStorage.setItem(
     "loginUser",
-    JSON.stringify({ nip: user.nip, role: user.role })
+    JSON.stringify({
+      nip: user.nip,
+      role: user.role
+    })
   );
 
-  if (user.role === "admin") {
-    window.location.href = "admin-dashboard.html";
-  } else {
-    window.location.href = "user-read-dashboard.html";
-  }
+  // ✅ ONE dashboard for ALL roles
+  window.location.href = "all-read-dashboard.html";
 }
 
 module.exports = { login };

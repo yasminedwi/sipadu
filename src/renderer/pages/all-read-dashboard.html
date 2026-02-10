@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="dashboard-page">
+    <header class="top-bar" id="topbar">
+
+      <!-- ADMIN AREA -->
+      <div id="adminArea">
+        <button class="admin-btn"
+                onclick="window.location.href='admin-page.html'">
+          ADMIN
+        </button>
+      </div>
+
+      <img src="../css/images/logo-dpmptsp-v-footer.png" class="logo" style="width: 60px; height: 60px; margin-left: 30%;">
+
+    <nav>
+      <button class="nav-btn active" onclick="window.location.href='user-read-dashboard.html'">BERANDA</button>
+      <button class="nav-btn1" onclick="window.location.href='all-edit-pengaturan-akun.html'">AKUN</button>
+      <button class="nav-btn2" onclick="window.location.href='all-konfirmasi-logout.html'">KELUAR</button>
+    </nav>
+  </header>
+
+  <main class="content2"></main>
+  <main class="content3"></main>
+
+  <main class="content">
+    <div class="cards">
+
+      <button class="card red" onclick="window.location.href='all-read-duk.html'">DATA PEGAWAI</button>
+      <button class="card yellow" onclick="window.location.href='all-read-data-keluarga.html'">DATA KELUARGA PEGAWAI</button>
+      <button class="card green" onclick="window.location.href='all-read-countdown-kgb.html'">COUNTDOWN KGB</button>
+
+    </div>
+  </main>
+
+  <script>
+    // get logged-in user
+    const loginUser = JSON.parse(localStorage.getItem("loginUser"));
+
+    // not logged in → back to login
+    if (!loginUser) {
+      window.location.href = "login.html";
+    }
+
+    const adminArea = document.getElementById("adminArea");
+    const topBar = document.getElementById("topBar");
+
+    // not admin → hide admin UI
+    if (loginUser.role !== "admin") {
+      if (adminArea) adminArea.style.display = "none";
+    } else {
+      // admin → apply admin style
+      if (topBar) topBar.classList.add("admin-top-bar");
+    }
+  </script>
+
+</body>
+</html>
