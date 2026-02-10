@@ -2,25 +2,48 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Daftar Urut Kepegawaian</title>
   <link rel="stylesheet" href="../css/style.css">
 </head>
+
 <body class="dashboard-page">
 
-<header class="top-bar">
-  <img src="../css/images/logo-dpmptsp-v-footer.png" class="logo" style="width:60px;height:60px;margin-left:30%;">
+  <header class="top-bar">
+    <div id="adminArea">
+      <button class="admin-btn"
+        onclick="window.location.href='admin-page.html'">
+        ADMIN
+      </button>
+    </div>
 
-  <nav>
-    <button class="nav-btn" onclick="window.location.href='user-read-dashboard.html'">BERANDA</button>
-    <button class="nav-btn active">DATA PEGAWAI</button>
-    <button class="nav-btn2" onclick="window.location.href='all-konfirmasi-logout.html'">KELUAR</button>
-  </nav>
-</header>
+    <img src="../css/images/logo-dpmptsp-v-footer.png"
+         class="logo-mini" alt="Logo DPMPTSP">
+    <img src="../css/images/Lambang_Kota_Kendari.png"
+          class="logo-kota" alt="Logo Kota Kendari">
 
-<main class="content2"></main>
-<main class="content3"></main>
+    <nav>
+      <button class="nav-btn active"
+        onclick="window.location.href='all-read-dashboard.html'">
+        BERANDA
+      </button>
 
-<main class="content">
+      <button class="nav-btn1"
+        onclick="window.location.href='all-edit-pengaturan-akun.html'">
+        AKUN
+      </button>
+
+      <button class="nav-btn2"
+        onclick="window.location.href='all-konfirmasi-logout.html'">
+        KELUAR
+      </button>
+    </nav>
+  </header>
+
+  <main class="content2"></main>
+  <main class="content3"></main>
+
+  <main class="content">
 
   <input type="text" placeholder="Cari disini...."
     style="width:100%;padding:12px;border-radius:10px;border:1px solid #ccc;margin-bottom:30px;">

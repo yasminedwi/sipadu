@@ -1,3 +1,6 @@
+/* ======================
+   GLOBAL RESET & BASE
+   ====================== */
 * {
   margin: 0;
   padding: 0;
@@ -12,12 +15,15 @@ body {
   background-position: center;
 }
 
+/* ======================
+   LAYOUT CONTAINERS
+   ====================== */
 .container {
   display: flex;
   height: 100vh;
 }
 
-/* LEFT */
+/* LEFT SIDE (Login / Landing) */
 .left {
   flex: 1;
   display: flex;
@@ -25,34 +31,7 @@ body {
   justify-content: center;
 }
 
-/* ======================
-   ADMIN DASHBOARD STYLE
-   ====================== */
-
-.admin-top-bar {
-  background-color: #2c2c2c; /* example admin color */
-}
-
-.admin-btn {
-  background-color: #c62828;
-  color: white;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.admin-btn:hover {
-  background-color: #b71c1c;
-}
-
-/* logo cleanup */
-.logo {
-  width: 300px;
-  margin-left: 30%;
-}
-
-/* RIGHT */
+/* RIGHT SIDE (Login / Content) */
 .right {
   flex: 1;
   display: flex;
@@ -71,6 +50,9 @@ body {
   margin-bottom: 30px;
 }
 
+/* ======================
+   FORM ELEMENTS
+   ====================== */
 form {
   width: 70%;
 }
@@ -92,148 +74,199 @@ input {
 button {
   width: 200px;
   padding: 12px;
-  border: none;
   border-radius: 10px;
+  border: none;
   background-color: #b5b76b;
-  color: white;
   font-size: 16px;
   cursor: pointer;
-  box-shadow: 7px -6px 13px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 7px -6px 13px rgba(0,0,0,.25);
 }
 
-nav button.nav-btn {
-  width: auto;
-  padding: 15px 30px 50px;
-  background: #efdbd5;
-  border-radius: 20px 20px 0 0;
-  color: black;
-  font-weight: bold;
-  border: none;
-  margin-left: 10px;
-  cursor: pointer;
-  position: relative;
-  z-index: 3;
-}
-
-nav button.nav-btn1 {
-  width: auto;
-  padding: 15px 30px 50px;
-  background: #e7e6d8;
-  border-radius: 20px 20px 0 0;
-  color: black;
-  font-weight: bold;
-  border: none;
-  margin-left: 10px;
-  cursor: pointer;
-  position: relative;
-  z-index: 3;
-}
-
-nav button.nav-btn2 {
-  width: auto;
-  padding: 15px 30px 50px;
-  background: #d7dde7;
-  border-radius: 20px 20px 0 0;
-  color: black;
-  font-weight: bold;
-  border: none;
-  margin-left: 10px;
-  cursor: pointer;
-  position: relative;
-  z-index: 1;
-}
-
-
-nav button.nav-btn.active {
-  background: white;
-}
-
-nav button.nav-btn1.active {
-  background: white;
-}
-
+/* ======================
+   DASHBOARD PAGE
+   ====================== */
 .dashboard-page {
   min-height: 100vh;
+  position: relative;
   background-image: url('images/bg.png');
 }
 
+/* ======================
+   TOP BAR
+   ====================== */
 .top-bar {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 34px 60px 0px;
-  background: #cfe0c200;
+  align-items: flex-start;
+  padding: 34px 60px 0;
+  position: relative;
+  z-index: 10;
 }
 
-.logo {
-  margin-left: 30%;
-}
-
-.admin-top-bar::before {
-  content: "ADMIN";
-  font-size: 16px;
-  font-weight: bold;
-  color: black;
-  padding: 15px 30px;
-  background: #e7e6d8;
-  border-radius: 20px 20px 0 0;
-  position: absolute;
-  left: 60px;
-  z-index: 3;
-}
-
+/* ======================
+   ADMIN BUTTON (FIXED)
+   ====================== */
 .admin-btn {
   font-size: 16px;
   font-weight: bold;
   color: black;
-  padding: 15px 30px;
+  padding: 15px 28px 40px;
   background: #e7e6d8;
   border-radius: 20px 20px 0 0;
   border: none;
   cursor: pointer;
-  z-index: 3;
+  position: relative;
+  z-index: 1;
+  top: -17px;
 }
 
+.admin-btn:hover {
+  background: #dcdac8;
+}
+
+/* ❌ REMOVED:
+.admin-top-bar::before {
+  content: "ADMIN";
+}
+This caused duplicate ADMIN text
+*/
+
+/* ======================
+   LOGOS
+   ====================== */
+.logo {
+  width: 200px;
+  margin-left: 5%;
+}
+
+.logo-mini {
+  width: 50px;
+  margin-left: 20%;
+  position: relative;
+  top: -10px;
+}
+
+.logo-kota {
+  width: 50px;
+  margin-left: 5%;
+  position: relative;
+  top: -10px;
+}
+
+/* ======================
+   NAVIGATION TABS
+   ====================== */
 nav {
   margin-left: auto;
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
   position: relative;
-  z-index: 2;
 }
 
+/* Main tab */
+nav button.nav-btn {
+  padding: 15px 28px 40px;
+  background: #efdbd5;
+  border-radius: 20px 20px 0 0;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  z-index: 5;
+}
+
+/* Second layer tab */
+nav button.nav-btn1 {
+  padding: 20px 28px 40px;
+  background: #e7e6d8;
+  border-radius: 20px 20px 0 0;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  z-index: 3;
+  top: -11px;
+}
+
+/* Third layer tab */
+nav button.nav-btn2 {
+  padding: 15px 28px 40px;
+  background: #d7dde7;
+  border-radius: 20px 20px 0 0;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  top: -22px;
+}
+
+/* Active tab */
+nav button.active {
+  background: white;
+  height: 77px;
+  top: 11px;
+}
+
+nav button1.active {
+  background: white;
+  height: 77px;
+  top: 11px;
+}
+
+/* ======================
+   CONTENT LAYERS
+   ====================== */
 .content {
   background: white;
-  margin: 0 0px;
+  padding: 260px;
+  border-radius: 36px 36px 0 0;
+  position: absolute;
+  width: 100%;
+  top: 123px;
+  min-height: 88vh;
+  z-index: 6;
+}
+
+.content1 {
+  background: #efdbd5;
   padding: 260px;
   border-radius: 36px 36px 0 0;
   position: relative;
-  z-index: 3;
-  box-shadow: 7px -6px 13px 0px rgba(0, 0, 0, 0.25);
+  top: 0px;
+  min-height: 88vh;
+  z-index: 6;
+  box-shadow: 7px -6px 13px rgba(0,0,0,.25);
 }
 
 .content2 {
   background: #e6e6d8;
-  margin: 0 0px;
   padding: 260px;
   border-radius: 36px 36px 0 0;
   position: absolute;
-  z-index: 2;
-  width: calc(100%);
-  top: 110px;
+  top: 101px;
+  width: 100%;
   min-height: calc(100vh - 140px);
-  box-shadow: 7px -6px 13px 0px rgba(0, 0, 0, 0.25);
+  z-index: 4;
+  box-shadow: 7px -6px 13px rgba(0,0,0,.25);
 }
 
 .content3 {
   background: #d7dde7;
-  margin: 0 0px;
-  padding: 260px;
+  padding: 120px 60px 80px;
   border-radius: 36px 36px 0 0;
   position: absolute;
-  z-index: 1;
-  width: calc(100%);
-  top: 100px;
-  min-height: calc(100vh - 140px);  box-shadow: 7px -6px 13px 0px rgba(0, 0, 0, 0.25);}
+  top: 90px;
+  width: 100%;
+  min-height: auto;
+  z-index: 2;
+  box-shadow: 7px -6px 13px rgba(0,0,0,.25);
+}
 
+/* ======================
+   DASHBOARD CARDS
+   ====================== */
 .cards {
   display: flex;
   justify-content: center;
@@ -248,15 +281,12 @@ nav {
   align-items: center;
   justify-content: center;
   font-weight: bold;
-  box-shadow: 0 15px 35px rgba(0,0,0,.2);
   background: white;
-  color: black;
-  text-align: center;
   font-size: 18px;
-  transition: transform 0.3s ease;
   border: 15px solid;
   cursor: pointer;
-  padding: 0;
+  transition: transform .3s ease;
+  box-shadow: 0 15px 35px rgba(0,0,0,.2);
 }
 
 .card:hover {
@@ -267,7 +297,9 @@ nav {
 .yellow { border-color: #e5e84c; }
 .green { border-color: #4ee86d; }
 
-/* Logout Confirmation */
+/* ======================
+   LOGOUT PAGE
+   ====================== */
 .logout-container {
   display: flex;
   justify-content: center;
@@ -282,130 +314,7 @@ nav {
   background: white;
   padding: 40px;
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   text-align: center;
   max-width: 400px;
-}
-
-.logout-box h1 {
-  margin-bottom: 20px;
-  color: #333;
-}
-
-.logout-box p {
-  margin-bottom: 30px;
-  color: #666;
-}
-
-.button-group {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-}
-
-.button-group button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.btn-confirm {
-  background-color: #e74c3c;
-  color: white;
-}
-
-.btn-confirm:hover {
-  background-color: #c0392b;
-}
-
-.btn-cancel {
-  background-color: #95a5a6;
-  color: white;
-}
-
-.btn-cancel:hover {
-  background-color: #7f8c8d;
-}
-
-.content .akun-wrapper {
-display: flex;
-gap: 80px;
-align-items: flex-start;
-}
-
-.content .akun-left {
-width: 260px;
-text-align: center;
-}
-
-.content .akun-left p {
-margin-bottom: 20px;
-font-size: 16px;
-}
-
-.content .foto-profil {
-width: 180px;
-height: 180px;
-background: #ddd;
-border-radius: 50%;
-margin: 0 auto;
-position: relative;
-}
-
-.content .foto-profil input {
-position: absolute;
-bottom: 0;
-right: 0;
-}
-
-.content .akun-divider {
-width: 2px;
-background: black;
-height: 320px;
-}
-
-.content .akun-right {
-flex: 1;
-}
-
-.content .akun-right label {
-margin-top: 20px;
-}
-
-.content .akun-right input {
-background: #eee;
-border: none;
-}
-
-.content .akun-button {
-display: flex;
-justify-content: center;
-gap: 40px;
-margin-top: 80px;
-}
-
-.content .btn-urungkan {
-width: 200px;
-padding: 12px;
-border: none;
-border-radius: 10px;
-background: #e74c3c;
-color: white;
-font-size: 16px;
-cursor: pointer;
-box-shadow: 7px -6px 13px 0px rgba(0, 0, 0, 0.25);
-}
-
-.content .btn-simpan {
-width: 200px;
-padding: 12px;
-border: none;
-border-radius: 10px;
-background: #7ac77a;
-color: black;
-font-size: 16px;
-cursor: pointer;
-box-shadow: 7px -6px 13px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 6px rgba(0,0,0,.1);
 }

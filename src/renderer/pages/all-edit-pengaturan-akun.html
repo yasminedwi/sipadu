@@ -1,25 +1,51 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Akun</title>
     <link rel="stylesheet" href="../css/style.css">
 </head>
+
 <body class="dashboard-page">
+
     <header class="top-bar">
-        <img src="../css/images/logo-dpmptsp-v-footer.png" class="logo" style="width: 60px; height: 60px; margin-left: 30%;">
+
+        <!-- ADMIN AREA -->
+        <div id="adminArea">
+        <button class="admin-btn"
+            onclick="window.location.href='admin-page.html'">
+            ADMIN
+        </button>
+        </div>
+
+        <img src="../css/images/logo-dpmptsp-v-footer.png"
+            class="logo-mini" alt="Logo DPMPTSP">
+        <img src="../css/images/Lambang_Kota_Kendari.png"
+            class="logo-kota" alt="Logo Kota Kendari">
 
         <nav>
-            <button class="nav-btn" onclick="window.location.href='user-read-dashboard.html'">BERANDA</button>
-            <button class="nav-btn1 active" onclick="window.location.href='all-edit-pengaturan-akun.html'">AKUN</button>
-            <button class="nav-btn2" onclick="window.location.href='all-konfirmasi-logout.html'">KELUAR</button>
+            <button class="nav-btn"
+                onclick="window.location.href='all-read-dashboard.html'">
+                BERANDA
+            </button>
+
+            <button class="nav-btn1.active"
+                onclick="window.location.href='all-edit-pengaturan-akun.html'">
+                AKUN
+            </button>
+
+            <button class="nav-btn2"
+                onclick="window.location.href='all-konfirmasi-logout.html'">
+                KELUAR
+            </button>
         </nav>
     </header>
 
-    <main class="content2"></main>
-    <main class="content3"></main>
+    <!-- CONTENT LAYERS -->
+    <div class="content1"></div>
+    <div class="content2"></div>
+    <div class="content3"></div>
     
     <main class="content">
         <div class="akun-wrapper">
@@ -51,6 +77,23 @@
             <button class="btn-simpan" type="submit">Simpan</button>
         </div>
     </main>
-</body>
+      <!-- ROLE CHECK -->
+    <script>
+        const loginUser = JSON.parse(localStorage.getItem("loginUser"));
 
+        if (!loginUser) {
+        window.location.href = "login.html";
+        }
+
+        const adminArea = document.getElementById("adminArea");
+        const topBar = document.getElementById("topBar");
+
+        if (loginUser.role !== "admin") {
+        adminArea.style.display = "none";
+        } else {
+        topBar.classList.add("admin-top-bar");
+        }
+    </script>
+
+</body>
 </html>
