@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Input Pegawai Baru</title>
+  <link rel="stylesheet" href="../css/style.css">
+
+  <style>
+    .content {
+      padding: 20px 60px;
+    }
+    h2 {
+      margin-bottom: 20px;
+      font-size: 20px;
+    }
+    form label {
+      font-size: 13px;
+      margin-top: 6px;
+    }
+    form input {
+      height: 30px;
+      padding: 4px 8px;
+      font-size: 13px;
+      margin-bottom: 6px;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+    }
+    .akun-button {
+      margin-top: 15px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+    .btn-simpan,
+    .btn-urungkan {
+      padding: 8px 20px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body class="dashboard-page">
+
+  <div class="top-bar">
+    <nav>
+      <button class="nav-btn active">Input Pegawai Baru</button>
+    </nav>
+  </div>
+
+  <div class="content">
+    <h2>INPUT PEGAWAI BARU</h2>
+
+    <!-- IMPORTANT PART -->
+    <form action="admin-add-pegawai.php" method="POST">
+      <div class="form-grid">
+
+        <!-- KIRI -->
+        <div>
+          <label>Nama</label>
+          <input type="text" name="nama" required>
+
+          <label>NIP</label>
+          <input type="text" name="nip" required>
+
+          <label>Tempat Lahir</label>
+          <input type="text" name="tempat_lahir">
+
+          <label>Tanggal Lahir</label>
+          <input type="date" name="tanggal_lahir">
+
+          <label>Golongan</label>
+          <input type="text" name="golongan">
+
+          <label>TMT Golongan</label>
+          <input type="date" name="tmt_golongan">
+
+          <label>Jabatan</label>
+          <input type="text" name="jabatan">
+        </div>
+
+        <!-- KANAN -->
+        <div>
+          <label>Gol Jabatan</label>
+          <input type="text" name="gol_jabatan">
+
+          <label>Jenis Kelamin</label>
+          <input type="text" name="jenis_kelamin">
+
+          <label>Masa Kerja</label>
+          <input type="number" name="masa_kerja">
+
+          <label>Diklat Penunjang</label>
+          <input type="text" name="diklat">
+
+          <label>Ijazah Terakhir</label>
+          <input type="text" name="ijazah">
+
+          <label>Keluarga</label>
+          <input type="text" name="keluarga">
+
+          <label>Password</label>
+          <input type="password" name="password" required>
+        </div>
+
+      </div>
+
+      <div class="akun-button">
+        <button type="submit" class="btn-simpan">SIMPAN</button>
+        <a href="admin-page.html" class="btn-urungkan">URUNGKAN</a>
+      </div>
+    </form>
+  </div>
+
+</body>
+</html>

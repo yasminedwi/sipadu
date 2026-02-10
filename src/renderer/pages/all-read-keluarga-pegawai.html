@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Data Keluarga Pegawai</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="dashboard-page">
+
+<header class="top-bar">
+  <img src="../css/images/logo-dpmptsp-v-footer.png" class="logo" style="width:60px;height:60px;margin-left:30%;">
+
+  <nav>
+    <button class="nav-btn" onclick="window.location.href='user-read-dashboard.html'">BERANDA</button>
+    <button class="nav-btn active">DATA KELUARGA PEGAWAI DPMPTSP</button>
+    <button class="nav-btn2" onclick="window.location.href='all-konfirmasi-logout.html'">KELUAR</button>
+  </nav>
+</header>
+
+<main class="content2"></main>
+<main class="content3"></main>
+
+<main class="content">
+
+  <h2 style="text-align:center;margin-bottom:20px;">
+    DATA KELUARGA PEGAWAI DPMPTSP
+  </h2>
+
+  <p style="text-align:center;margin-bottom:30px;font-weight:bold;">
+    Nama Pegawai. Contoh Nama Pegawai
+  </p>
+
+  <input type="text" placeholder="Cari disini..." 
+    style="width:100%;padding:12px;border-radius:10px;border:1px solid #ccc;margin-bottom:30px;">
+
+  <table width="100%" cellpadding="12" cellspacing="0">
+    <thead>
+      <tr style="border-bottom:2px solid #999;">
+        <th>No</th>
+        <th>Status Anggota</th>
+        <th>Nama</th>
+        <th>Tanggal Lahir</th>
+        <th>Jenis Kelamin</th>
+        <th>Pekerjaan atau Jenjang Sekolah</th>
+        <th>Ditanggung</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="border-bottom:1px solid #ddd;">
+        <td>1</td>
+        <td>Istri</td>
+        <td>Nama Istri</td>
+        <td>1 Januari 2000</td>
+        <td>P</td>
+        <td>IRT</td>
+        <td>Ya</td>
+      </tr>
+      <tr style="border-bottom:1px solid #ddd;">
+        <td>2</td>
+        <td>Anak Ke-1</td>
+        <td>Nama Anak 1</td>
+        <td>1 Januari 2005</td>
+        <td>L</td>
+        <td>Kuliah</td>
+        <td>Ya</td>
+      </tr>
+      <tr style="border-bottom:1px solid #ddd;">
+        <td>3</td>
+        <td>Anak Ke-2</td>
+        <td>Nama Anak 2</td>
+        <td>1 Januari 2010</td>
+        <td>P</td>
+        <td>Sekolah</td>
+        <td>Ya</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div style="display:flex;gap:60px;margin-top:60px;justify-content:center;">
+
+    <div style="width:220px;height:300px;background:#e0e0e0;
+      display:flex;align-items:center;justify-content:center;
+      border-radius:20px;">
+      PREVIEW
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:20px;">
+      <button style="background:#9db8ff;color:black;">DOWNLOAD WORD</button>
+      <button style="background:#ff7b7b;color:black;">DOWNLOAD PDF</button>
+      <button style="background:#999;color:white;">PRINT</button>
+    </div>
+
+  </div>
+
+</main>
+
+</body>
+</html>

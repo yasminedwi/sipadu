@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login DPMPTSP</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Kanit" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- LEFT SIDE -->
+    <div class="left">
+      <img src="../css/images/logo-dpmptsp-v-footer.png" alt="Logo DPMPTSP" class="logo">
+    </div>
+
+    <!-- RIGHT SIDE -->
+    <div class="right">
+      <h1>Selamat Datang</h1>
+      <p>Silahkan masukkan data anda</p>
+
+      <!-- ERROR MESSAGE -->
+      <p id="error" style="color:red; margin-bottom:10px"></p>
+
+      <!-- LOGIN FORM -->
+      <form onsubmit="login(); return false;">
+        <label>NIP</label>
+        <input type="text" name="nip" placeholder="Masukkan NIP" required>
+
+        <label>Password</label>
+        <input type="password" name="password" placeholder="Masukkan Password" required>
+
+        <button type="submit">LOGIN</button>
+      </form>
+    </div>
+
+  </div>
+
+  <script>
+    const { login } = require("../js/login");
+  </script>
+
+</body>
+</html>
