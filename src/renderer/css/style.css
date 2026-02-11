@@ -370,19 +370,17 @@ td:nth-child(7) {
   width: 100px;
 }
 
-/* Aksi column */
 td:nth-child(7),
 th:nth-child(7) {
-  width: 90px;
-  text-align: center;
+  width: 70px;
+  text-align: left;   /* ubah dari center ke left */
 }
 
-/* Button styling */
 td:nth-child(7) button {
-  padding: 10px 8px;
-  margin-left: 9px;
-  font-size: 14px;
-  border-radius: 8px;
+  padding: 10px 10px;
+  font-size: 13px;
+  border-radius: 6px;
+  width: 40px;
 }
 
 td {
@@ -400,7 +398,25 @@ th:nth-child(4) {
 /* Jenis Kelamin column (6th column) */
 td:nth-child(6),
 th:nth-child(6) {
-  width: 120px;
+  width: 100px;
+  white-space: nowrap;
+}
+
+/* Jabatan column (5th column) */
+td:nth-child(5),
+th:nth-child(5) {
+  width: 130px;       /* ubah sesuai kebutuhan */
+  max-width: 300px;
+  white-space: normal;
+  word-break: break-word;
+}
+
+/* Golongan column (3rd column) */
+td:nth-child(3),
+th:nth-child(3) {
+  width: 80px;
+  max-width: 80px;
+  text-align: center;
   white-space: nowrap;
 }
 
@@ -485,7 +501,34 @@ td small {
   width: 160px;
 }
 
-#pegawaiTable th:nth-child(3),
-#pegawaiTable td:nth-child(3) {
-  width: 120px;
+/* TTL column (3rd column) */
+#pegawaiTable td:nth-child(3),
+#pegawaiTable th:nth-child(3) {
+  width: 90px;
+  max-width: 90px;
+}
+
+#pegawaiTable td:nth-child(6),
+#pegawaiTable th:nth-child(6) {
+  padding-left: 0px;
+  width: 80px;
+}
+
+#pegawaiTable td:nth-child(10),
+#pegawaiTable th:nth-child(10) {
+  width: 90px;
+  padding-left: 10px;
+}
+
+#pegawaiTable td:nth-child(13),
+#pegawaiTable th:nth-child(13) {
+  width: 70px;
+  text-align: left;   /* ubah dari center ke left */
+}
+
+#pegawaiTable td:nth-child(13) button {
+  padding: 10px 10px;
+  font-size: 13px;
+  border-radius: 6px;
+  width: 40px;
 }

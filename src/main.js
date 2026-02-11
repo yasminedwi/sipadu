@@ -1,22 +1,32 @@
-  const { app, BrowserWindow, ipcMain } = require("electron");
-  const path = require("path");
-  const fs = require("fs");
-  const bcrypt = require("bcryptjs");
+const { app, BrowserWindow, ipcMain, screen } = require("electron");
+const path = require("path");
+const fs = require("fs");
+const bcrypt = require("bcryptjs");
 
-  const filePath = path.join(__dirname, "data", "pegawai.json");
 
   function createWindow() {
+
+    const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+
     const win = new BrowserWindow({
-      width: 1200,
-      height: 800,
+      width: width,
+      height: height,
+      resizable: false,     // kalau mau tidak bisa diubah ukurannya
+      maximizable: false,   // tidak bisa maximize lagi
       webPreferences: {
         nodeIntegration: true,
         contextIsolation: false
       }
     });
 
+    win.setMenuBarVisibility(false);
+
     win.loadFile(path.join(__dirname, "renderer", "pages", "index.html"));
   }
+
+app.whenReady().then(createWindow);
+
+
 
   app.whenReady().then(createWindow);
 

@@ -92,7 +92,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     data.forEach((pegawai, index) => {
 
-        const ttl = `${pegawai.tempat_lahir || "-"}, ${pegawai.tanggal_lahir || "-"}`;
         const usia = pegawai.tanggal_lahir ? calculateAge(pegawai.tanggal_lahir) : "-";
 
         const row = `
@@ -102,7 +101,10 @@ document.addEventListener("DOMContentLoaded", function () {
             <strong>${pegawai.nama}</strong><br>
             <small>${pegawai.nip}</small>
             </td>
-            <td>${ttl}</td>
+            <td>
+            ${pegawai.tempat_lahir || "-"}<br>
+            ${pegawai.tanggal_lahir || "-"}
+            </td>
             <td>${pegawai.golongan}</td>
             <td>${formatDate(pegawai.next_tmt)}</td>
             <td class="td2">${pegawai.jabatan || "-"}</td>

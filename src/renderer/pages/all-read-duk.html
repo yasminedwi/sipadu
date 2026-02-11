@@ -3,20 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Daftar Urut Kepegawaian</title>
+  <title>Daftar Pegawai</title>
   <link rel="stylesheet" href="../css/style.css">
 </head>
 
-<body class="dashboard-page">
+<body class="dashboard-page1">
 
-  <header class="top-bar" id="topbar">
-    <div id="adminArea">
-      <button class="admin-btn"
-        onclick="window.location.href='admin-page.html'">
-        ADMIN
-      </button>
-    </div>
-
+  <header class="top-bar2" id="topbar">
     <a href="all-read-dashboard.html">
         <img src="../css/images/logo-dpmptsp-v-footer.png"
             class="logo-mini"
@@ -25,110 +18,43 @@
     <img src="../css/images/Lambang_Kota_Kendari.png"
          class="logo-kota" alt="Logo Kota Kendari">
 
-    <nav>
-      <button class="nav-btn active"
-        onclick="window.location.href='all-read-dashboard.html'">
-        BERANDA
-      </button>
-
-      <button class="nav-btn1"
-        onclick="window.location.href='all-edit-pengaturan-akun.html'">
-        AKUN
-      </button>
-
-      <button class="nav-btn2"
-        onclick="window.location.href='all-konfirmasi-logout.html'">
-        KELUAR
-      </button>
-    </nav>
+    <h2>DAFTAR PEGAWAI</h2>
   </header>
 
-  <main class="content2"></main>
-  <main class="content3"></main>
+    <main class="content4">
 
-  <main class="content">
+      <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Cari disini....">
+      </div>
 
-  <input type="text" placeholder="Cari disini...."
-    style="width:100%;padding:12px;border-radius:10px;border:1px solid #ccc;margin-bottom:30px;">
+    <div class="table-container">
+      <table id="pegawaiTable">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Nama & NIP</th>
+            <th>TTL</th>
+            <th>Gol.</th>
+            <th>TMT Gol.</th>
+            <th>Jabatan</th>
+            <th>TMT Jab.</th>
+            <th>Masa Kerja</th>
+            <th>Diklat Penjenjangan</th>
+            <th>Ijazah Terakhir</th>
+            <th>Usia</th>
+            <th>Jenis Kelamin</th>
+            <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Data from JSON will appear here -->
+          </tbody>
+          </table>
+        </div>
+    </main>
 
-  <div style="overflow-x:auto;">
-    <table width="100%" cellpadding="10" cellspacing="0" style="font-size:14px;">
-      <thead>
-        <tr style="border-bottom:2px solid #333;text-align:left;">
-          <th>No.</th>
-          <th>Nama & NIP</th>
-          <th>TTL</th>
-          <th>Golongan</th>
-          <th>TMT Gol.</th>
-          <th>Jabatan</th>
-          <th>TMT Jab.</th>
-          <th>Masa Kerja</th>
-          <th>Diklat Penjenjangan</th>
-          <th>Ijazah Terakhir</th>
-          <th>Usia</th>
-          <th>Jenis Kelamin</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <tr style="border-bottom:1px solid #ddd;">
-          <td>1</td>
-          <td>
-            Maman Firman Syah, S. Stp, MM.<br>
-            <small>198010201999121001</small>
-          </td>
-          <td>
-            Kendari<br>
-            <small>20-10-1980</small>
-          </td>
-          <td>IV/b</td>
-          <td>15 Februari 2026</td>
-          <td>Sekretaris Dinas Penanaman Modal</td>
-          <td>15 Februari 2026</td>
-          <td>
-            18 Tahun<br>
-            <small>7 Bulan</small>
-          </td>
-          <td>
-            Diklat PIM Tingkat III<br>
-            <small>Angk tahun 2018</small>
-          </td>
-          <td>S-2 Ilmu Manajemen</td>
-          <td>43</td>
-          <td>P</td>
-        </tr>
-
-        <tr style="border-bottom:1px solid #ddd;">
-          <td>2</td>
-          <td>
-            Nukke Djuwita Isamu, S. Kom., M. Si.<br>
-            <small>197505042000032007</small>
-          </td>
-          <td>
-            Kendari<br>
-            <small>04-05-1975</small>
-          </td>
-          <td>IV/b</td>
-          <td>1 Maret 2026</td>
-          <td>Kepala DPMPTSP</td>
-          <td>1 Maret 2026</td>
-          <td>
-            10 Tahun<br>
-            <small>1 Bulan</small>
-          </td>
-          <td>
-            Diklat PIM Tingkat IV<br>
-            <small>Tahun 2009</small>
-          </td>
-          <td>S-2 Manajemen</td>
-          <td>48</td>
-          <td>L</td>
-        </tr>
-      </tbody>
-    </table>
+    <script src="../js/list-pegawai.js"></script>
   </div>
-
-</main>
 
 </body>
 </html>
