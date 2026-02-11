@@ -47,37 +47,79 @@ document.addEventListener("DOMContentLoaded", function () {
     return `${y}-${m}-${d}`;
   }
 
-  // Render table with color-coded rows
-  function renderTable(data) {
+    function renderTable(data) {
     tableBody.innerHTML = "";
 
     data.forEach((pegawai, index) => {
-      const daysLeft = getDaysUntil(pegawai.next_tmt);
-      let rowColor = "";
 
-      if (daysLeft <= 14) {
-        rowColor = "background-color: #ff6a6a;";
-      } else if (daysLeft <= 30) {
-        rowColor = "background-color: yellow;";
-      } else if (daysLeft <= 60) {
-        rowColor = "background-color: lightgreen;";
-      }
+        let keluargaDropdown = "";
 
-      const row = `
-        <tr style="${rowColor}">
-          <td>${index + 1}</td>
-          <td>${pegawai.nama}</td>
-          <td>${pegawai.golongan}</td>
-          <td><strong>${formatDate(pegawai.next_tmt)}</strong></td>
-          <td>${pegawai.jabatan}</td>
-          <td>${pegawai.jenis_kelamin}</td>
+        if (pegawai.keluarga && pegawai.keluarga.length > 0) {
+
+        let options = pegawai.keluarga.map((k, i) => {
+            return `<option value="${i}">
+                    ${k.hubungan} - ${k.nama}
+                    </option>`;
+        }).join("");
+
+        keluargaDropdown = `
+            <select class="keluarga-select" data-nip="${pegawai.nip}">
+            <option value="">-- Pilih Keluarga --</option>
+            ${options}
+            </select>
+        `;
+
+        } else {
+
+        keluargaDropdown = `
+            <select disabled>
+            <option>Tidak Ada Data</option>
+            </select>
+        `;
+        }
+
+        const row = `
+        <tr>
+            <td>${index + 1}</td>
+            <td>${pegawai.nama}</td>
+            <td>${pegawai.golongan}</td>
+            <td>${formatDate(pegawai.next_tmt)}</td>
+            <td>${pegawai.jabatan}</td>
+            <td>${pegawai.jenis_kelamin}</td>
+            <td>${keluargaDropdown}</td>
         </tr>
-      `;
-      tableBody.innerHTML += row;
+        `;
+
+        tableBody.innerHTML += row;
     });
-  }
+    }
 
   renderTable(pegawaiData);
+
+    tableBody.addEventListener("change", function (e) {
+
+    if (e.target.classList.contains("keluarga-select")) {
+
+        const nip = e.target.dataset.nip;
+        const keluargaIndex = e.target.value;
+
+        if (keluargaIndex === "") return;
+
+        const selectedPegawai = pegawaiData.find(p => p.nip === nip);
+        if (!selectedPegawai) return;
+
+        const selectedKeluarga = selectedPegawai.keluarga[keluargaIndex];
+
+        alert(
+    `Hubungan: ${selectedKeluarga.hubungan}
+    Nama: ${selectedKeluarga.nama}
+    Tanggal Lahir: ${selectedKeluarga.tanggal_lahir}
+    Jenis Kelamin: ${selectedKeluarga.jenis_kelamin}
+    Pekerjaan: ${selectedKeluarga.pekerjaan}
+    Status Tanggungan: ${selectedKeluarga.tanggungan}`
+        );
+    }
+    });
 
   // Search filter
   searchInput.addEventListener("keyup", function () {

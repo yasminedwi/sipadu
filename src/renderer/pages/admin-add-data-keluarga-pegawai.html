@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Keluarga Pegawai Baru</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body class="dashboard-page1">
+
+  <header class="top-bar2" id="topbar">
+    <a href="all-read-dashboard.html">
+        <img src="../css/images/logo-dpmptsp-v-footer.png"
+            class="logo-mini"
+            alt="Logo DPMPTSP">
+    </a>
+    <img src="../css/images/Lambang_Kota_Kendari.png"
+         class="logo-kota" alt="Logo Kota Kendari">
+
+    <h2>DATA KELUARGA BARU PEGAWAI</h2>
+  </header>
+
+    <main class="content4">
+      
+    <!-- IMPORTANT PART -->
+    <form id="pegawaiForm">
+      <div class="form-grid">
+
+        <div>
+          <label>Status Anggota</label>
+          <select name="role" required>
+            <option value="">-- Pilih Status Anggota --</option>
+            <option value="suami">Suami</option>
+            <option value="istri">Istri</option>
+            <option value="anak1">Anak 1</option>
+            <option value="anak2">Anak 2</option>
+            <option value="anak3">Anak 3</option>
+            <option value="orangtua">Orang Tua</option>
+            <option value="mertua">Mertua</option>
+            <option value="saudara">Saudara</option>
+            <option value="lainnya">Lainnya</option>
+          </select>
+
+          <label>Nama</label>
+          <input type="text" name="nama" required>
+
+          <label>Tanggal Lahir</label>
+          <input type="date" name="tanggal_lahir" required>
+
+          <label>Jenis Kelamin</label>
+          <select name="jenis_kelamin" required>
+            <option value="">-- Pilih Jenis Kelamin --</option>
+            <option value="Laki-laki">Laki-laki</option>
+            <option value="Perempuan">Perempuan</option>
+          </select>
+
+          <label>Pekerjaan</label>
+          <input type="text" name="pekerjaan" required>
+
+          <label>Status Tanggungan</label>
+          <select name="tanggungan" required>
+            <option value="">-- Pilih Status Tanggungan --</option>
+            <option value="ditanggung">Ditanggung</option>
+            <option value="tidak_ditanggung">Tidak Ditanggung</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="akun-button">
+        <button type="submit" class="btn-simpan">SIMPAN</button>
+        <button type="button" class="btn-urungkan" onclick="window.location.href='admin-page.html'">
+          URUNGKAN
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const { ipcRenderer } = require("electron");
+
+    document.getElementById("pegawaiForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const formData = Object.fromEntries(new FormData(e.target).entries());
+
+      const result = await ipcRenderer.invoke("save-pegawai", formData);
+
+      if (result.success) {
+        alert("Data berhasil disimpan!");
+        e.target.reset();
+      } else {
+        alert("Gagal menyimpan data: " + result.message);
+      }
+    });
+  </script>
+
+</body>
+</html>

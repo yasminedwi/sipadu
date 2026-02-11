@@ -532,3 +532,18 @@ td small {
   border-radius: 6px;
   width: 40px;
 }
+
+select {
+  margin-bottom: 18px; /* bisa 6px–12px sesuai selera */
+}
+
+.form-grid {
+  margin-left: 30%;
+  width: 75%;
+}
+
+.akun-button {
+  text-align: center;
+  margin-top: 15px;
+  margin-left: 250px;
+}

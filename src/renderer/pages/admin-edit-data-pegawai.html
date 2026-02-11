@@ -109,6 +109,8 @@
         <button type="button" class="btn-urungkan" onclick="window.location.href='admin-page.html'">
           URUNGKAN
         </button>
+        //hapus
+        //edit keluarga
       </div>
     </form>
   </div>
@@ -116,21 +118,36 @@
   <script>
     const { ipcRenderer } = require("electron");
 
+    let originalNip = null;
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      const params = new URLSearchParams(window.location.search);
+      originalNip = params.get("nip");
+    });
+
     document.getElementById("pegawaiForm").addEventListener("submit", async (e) => {
       e.preventDefault();
 
       const formData = Object.fromEntries(new FormData(e.target).entries());
 
-      const result = await ipcRenderer.invoke("save-pegawai", formData);
+      const result = await ipcRenderer.invoke("update-user", {
+        oldNip: originalNip,
+        newNip: formData.nip,
+        nama: formData.nama,
+        password: formData.password,
+        fileBuffer: null,
+        fileName: null
+      });
 
       if (result.success) {
-        alert("Data berhasil disimpan!");
-        e.target.reset();
+        alert("Data berhasil diupdate!");
+        window.location.href = "admin-page.html";
       } else {
-        alert("Gagal menyimpan data: " + result.message);
+        alert("Gagal update data");
       }
     });
-  </script>
 
+    src="../js/edit-pegawai.js"
+  </script>
 </body>
 </html>

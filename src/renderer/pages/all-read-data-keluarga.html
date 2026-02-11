@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
-    <meta charset="UTF-8">
-    <title>Data Pegawai</title>
-    <link rel="stylesheet" href="../css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Keluarga Pegawai</title>
+  <link rel="stylesheet" href="../css/style.css">
 </head>
 
-<body class="dashboard-page">
+<body class="dashboard-page1">
 
-    <header class="top-bar">
+  <header class="top-bar2" id="topbar">
     <a href="all-read-dashboard.html">
         <img src="../css/images/logo-dpmptsp-v-footer.png"
             class="logo-mini"
@@ -18,57 +18,42 @@
     <img src="../css/images/Lambang_Kota_Kendari.png"
          class="logo-kota" alt="Logo Kota Kendari">
 
-        <nav>
-            <button class="nav-btn" onclick="window.location.href='user-read-dashboard.html'">BERANDA</button>
-            <button class="nav-btn" onclick="window.location.href='all-edit-pengaturan-akun.html'">AKUN</button>
-            <button class="nav-btn2" onclick="window.location.href='all-konfirmasi-logout.html'">KELUAR</button>
-        </nav>
-    </header>
+    <h2>DATA KELUARGA PEGAWAI</h2>
+  </header>
 
-    <main class="content2"></main>
-    <main class="content3"></main>
+    <main class="content4">
 
-    <main class="content">
-        <h2 style="text-align:center;margin-bottom:40px;">DATA KELUARGA PEGAWAI DPMPTSP</h2>
+        <h2 class="title">DATA KELUARGA PEGAWAI</h2>
 
-        <input type="text" placeholder="Cari disini..." style="width:100%;padding:12px;border-radius:10px;border:1px solid #ccc;margin-bottom:30px;">
+        <!-- Search -->
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Cari disini....">
+        </div>
 
-        <table width="100%" cellpadding="12" cellspacing="0">
+        <!-- Table -->
+        <div class="table-container">
+            <table id="pegawaiTable">
             <thead>
-                <tr style="border-bottom:2px solid #999;">
-                    <th>No</th>
-                    <th>Nama</th>
-                    <th>Golongan</th>
-                    <th>Jabatan</th>
-                    <th>Jenis Kelamin</th>
-                    <th>Aksi</th>
+                <tr>
+                <th>No</th>
+                <th>Nama</th>
+                <th>Golongan</th>
+                <th>TMT</th>
+                <th>Jabatan</th>
+                <th>Jenis Kelamin</th>
+                <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
-                <tr style="border-bottom:1px solid #ddd;">
-                    <td>1</td>
-                    <td>Nama Pegawai Contoh</td>
-                    <td>IV/a</td>
-                    <td>Kepala Bidang</td>
-                    <td>Laki-laki</td>
-                    <td>
-                        <a href="all-read-keluarga-pegawai.html">></a>
-                    </td>
-                </tr>
-                <tr style="border-bottom:1px solid #ddd;">
-                    <td>2</td>
-                    <td>Nama Pegawai Contoh 2</td>
-                    <td>III/c</td>
-                    <td>Staf Ahli</td>
-                    <td>Perempuan</td>
-                    <td>
-                        <a href="all-read-keluarga-pegawai.html">></a>
-                    </td>
-                </tr>
+                <!-- Data from JSON will appear here -->
             </tbody>
-        </table>
-    </main>
+            </table>
+        </div>
 
+        </main>
+
+        <script src="../js/keluarga.js"></script>
+
+  </div>
 </body>
-
 </html>
