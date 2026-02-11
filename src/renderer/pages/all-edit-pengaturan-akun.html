@@ -9,7 +9,7 @@
 
 <body class="dashboard-page">
 
-    <header class="top-bar">
+    <header class="top-bar" id="topBar">
 
         <!-- ADMIN AREA -->
         <div id="adminArea">
@@ -47,39 +47,47 @@
     <div class="content2"></div>
     <div class="content3"></div>
     
-    <main class="content">
-        <div class="akun-wrapper">
-            <div class="akun-left">
-                <p>Foto Profil</p>
-                <div class="foto-profil">
-                    <input type="file" accept="image/*">
+<main class="content">
+    <div class="akun-wrapper">
+        <div class="akun-left">
+            <p>Foto Profil</p>
+            <div class="foto-profil">
+                <img id="previewFoto" width="120">
+                <input type="file" id="profilePic" accept="image/*">
+            </div>
+        </div>
+
+        <div class="akun-divider"></div>
+
+        <div class="akun-right">
+            <!-- FORM MULAI DI SINI -->
+            <form id="editForm">
+
+                <label>Nama Lengkap</label>
+                <input type="text" id="nama">
+
+                <label>NIP</label>
+                <input type="text" id="nip">
+
+                <label>Password Baru</label>
+                <input type="password" id="password" placeholder="Kosongkan jika tidak diubah">
+
+                <div class="akun-button">
+                    <button class="btn-batal" type="reset">Batal</button>
+                    <button class="btn-simpan" type="submit">Simpan</button>
                 </div>
-            </div>
 
-            <div class="akun-divider"></div>
+            </form>
+            <!-- FORM SELESAI DI SINI -->
 
-            <div class="akun-right">
-                <form>
-                    <label>Nama Lengkap</label>
-                    <input type="text">
-
-                    <label>NIP</label>
-                    <input type="text" readonly>
-
-                    <label>Password</label>
-                    <input type="password">
-                </form>
-            </div>
         </div>
-
-        <div class="akun-button">
-            <button class="btn-batal" type="reset">Batal</button>
-            <button class="btn-simpan" type="submit">Simpan</button>
-        </div>
-    </main>
+    </div>
+</main>
       <!-- ROLE CHECK -->
     <script>
-        const loginUser = JSON.parse(localStorage.getItem("loginUser"));
+        const { ipcRenderer } = require("electron");
+
+        const form = document.getElementById("editForm");
 
         if (!loginUser) {
         window.location.href = "login.html";
@@ -94,6 +102,56 @@
         topBar.classList.add("admin-top-bar");
         }
     </script>
+
+    <script>
+        const { ipcRenderer } = require("electron");
+
+        const form = document.getElementById("editForm");
+
+        // LOAD DATA USER
+        async function loadUser() {
+            const result = await ipcRenderer.invoke("get-user", loginUser.nip);
+
+            if (result.success) {
+                document.getElementById("nama").value = result.user.nama;
+                document.getElementById("nip").value = result.user.nip;
+
+                if (result.user.foto) {
+                    document.getElementById("previewFoto").src = result.user.foto;
+                }
+            }
+        }
+
+        loadUser();
+
+        // PREVIEW FOTO
+        document.getElementById("profilePic").addEventListener("change", (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                document.getElementById("previewFoto").src = file.path;
+            }
+        });
+
+        // SAVE PERUBAHAN
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const fileInput = document.getElementById("profilePic");
+
+            const result = await ipcRenderer.invoke("update-user", {
+                nip: loginUser.nip,
+                nama: document.getElementById("nama").value,
+                password: document.getElementById("password").value,
+                filePath: fileInput.files[0] ? fileInput.files[0].path : null
+            });
+
+            if (result.success) {
+                alert("Akun berhasil diupdate!");
+            } else {
+                alert("Gagal update akun");
+            }
+        });
+        </script>
 
 </body>
 </html>

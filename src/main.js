@@ -49,7 +49,8 @@ ipcMain.handle("save-pegawai", async (event, formData) => {
       diklat: formData.diklat,
       ijazah: formData.ijazah,
       password: hashedPassword,
-      role: formData.role
+      role: formData.role,
+      foto: null
     };
 
     data.push(newPegawai);
@@ -91,3 +92,62 @@ ipcMain.handle("login", async (event, { nip, password }) => {
     return { success: false, message: error.message };
   }
 });
+// GET USER
+ipcMain.handle("get-user", async (event, nip) => {
+  try {
+    const data = JSON.parse(fs.readFileSync(filePath, "utf-8"));
+    const user = data.find(p => p.nip === oldNip);
+
+    return { success: true, user };
+
+  } catch (error) {
+    console.error(error);
+    return { success: false };
+  }
+});
+
+
+// UPDATE USER
+ipcMain.handle("update-user", async (event, { oldNip, nip, nama, password, filePath }) => {
+  try {
+    const data = JSON.parse(fs.readFileSync(filePath, "utf-8"));
+    const user = data.find(p => p.nip === oldNip);
+
+    if (!user) return { success: false };
+
+    // update nama
+    user.nama = nama;
+
+    // update password kalau diisi
+    if (password && password.trim() !== "") {
+      const hashed = await bcrypt.hash(password, 10);
+      user.password = hashed;
+    }
+
+    // update foto kalau ada file baru
+    if (newFile) {
+      const picDir = path.join(__dirname, "data", "profile_pics");
+
+      if (!fs.existsSync(picDir)) {
+        fs.mkdirSync(picDir);
+      }
+
+      const ext = path.extname(newFile);
+      const newFileName = nip + ext;
+      const newPath = path.join(picDir, newFileName);
+
+      fs.copyFileSync(newFile, newPath);
+
+      user.foto = path.join("data", "profile_pics", newFileName);
+    }
+
+    fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+
+    return { success: true };
+
+  } catch (error) {
+    console.error(error);
+    return { success: false };
+  }
+}
+);

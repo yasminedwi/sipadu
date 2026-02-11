@@ -13,7 +13,8 @@
     "Diklat": "Diklat PIM Tingkat IV Tahun 2009",
     "Ijazah_Terakhir": "S-2 Manajemen SDM",
     "password": "$2b$10$y0XD6APXbMMMrGdn5yB0E.GCNiSrvHgHkqKnK0fgEMQq2UtRKbbMe",
-    "role": "admin"
+    "role": "admin",
+    "foto": "null.jpg"
   },
   {
     "nama": "Baharuddin, SE. M.Si.",
@@ -30,5 +31,22 @@
     "ijazah": "S-2 Administrasi Pembangunan",
     "password": "$2b$10$LfOMGwyH3.e.awh1PW55qOVOOn0nhj026T/gr0dCsEPY6e9rB.32a",
     "role": "pegawai"
+  },
+  {
+    "nama": "Irnayanti Bisma, S.Si., M.Si.",
+    "nip": "197805162002122003",
+    "tempat_lahir": "Kendari",
+    "tanggal_lahir": "1978-05-16",
+    "golongan": "IV/a",
+    "tmt_golongan": "2018-04-01",
+    "jabatan": "Kepala Bidang Penanaman Modal",
+    "tmt_jabatan": "2023-06-01",
+    "jenis_kelamin": "Perempuan",
+    "masa_kerja": "2047-11-01",
+    "diklat": "Diklat PIM Tingkat III",
+    "ijazah": "S-2",
+    "password": "$2b$10$jOOUy9JSNNKCpwdzABW.cuNZSALCsksskK7QZazoCVnRzSl0KepVi",
+    "role": "pegawai",
+    "foto": null
   }
 ]
