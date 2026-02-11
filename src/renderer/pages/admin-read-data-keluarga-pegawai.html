@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Keluarga Pegawai</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+    .btn-edit, .btn-delete {
+      margin-right: 5px;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+    .btn-edit { background-color: #4CAF50; color: white; border: none; }
+    .btn-delete { background-color: #f44336; color: white; border: none; }
+  </style>
+</head>
+<body class="dashboard-page1">
+
+  <header class="top-bar2" id="topbar">
+    <a href="admin-page.html">
+        <img src="../css/images/logo-dpmptsp-v-footer.png" class="logo-mini" alt="Logo DPMPTSP">
+    </a>
+    <img src="../css/images/Lambang_Kota_Kendari.png" class="logo-kota" alt="Logo Kota Kendari">
+    <h2>DATA KELUARGA PEGAWAI</h2>
+  </header>
+
+  <main class="content4">
+    <button onclick="window.location.href='admin-add-data-keluarga-pegawai.html'" class="btn-simpan">Tambah Anggota Keluarga</button>
+
+    <table id="keluargaTable">
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Status Anggota</th>
+          <th>Nama</th>
+          <th>Tanggal Lahir</th>
+          <th>Jenis Kelamin</th>
+          <th>Pekerjaan</th>
+          <th>Status Tanggungan</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Data akan dimasukkan di sini -->
+      </tbody>
+    </table>
+  </main>
+
+  <script>
+    const { ipcRenderer } = require("electron");
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      // ambil ID pegawai dari query string
+      const params = new URLSearchParams(window.location.search);
+      const pegawaiId = params.get("id");
+
+      if (!pegawaiId) return;
+
+      // ambil semua anggota keluarga dari backend
+      const result = await ipcRenderer.invoke("get-family-array", pegawaiId);
+
+      if (result.success && Array.isArray(result.members)) {
+        const tbody = document.getElementById("keluargaTable").querySelector("tbody");
+        tbody.innerHTML = ""; // kosongkan dulu
+
+        result.members.forEach((member, index) => {
+          const tr = document.createElement("tr");
+
+          tr.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${member.status_anggota || "-"}</td>
+            <td>${member.nama || "-"}</td>
+            <td>${member.tanggal_lahir || "-"}</td>
+            <td>${member.jenis_kelamin || "-"}</td>
+            <td>${member.pekerjaan || "-"}</td>
+            <td>${member.tanggungan || "-"}</td>
+            <td>
+              <button class="btn-edit" onclick="editMember('${member.id}')">Edit</button>
+              <button class="btn-delete" onclick="deleteMember('${member.id}')">Hapus</button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+    });
+
+    function editMember(id) {
+      window.location.href = `admin-edit-family.html?id=${id}`;
+    }
+
+    async function deleteMember(id) {
+      if (confirm("Yakin ingin menghapus anggota keluarga ini?")) {
+        const result = await ipcRenderer.invoke("delete-family-member", id);
+        if (result.success) {
+          alert("Data berhasil dihapus!");
+          location.reload();
+        } else {
+          alert("Gagal menghapus data!");
+        }
+      }
+    }
+  </script>
+
+</body>
+</html>

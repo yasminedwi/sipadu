@@ -41,6 +41,30 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 });
 
+// 🔥 HANDLE HAPUS BUTTON
+document.querySelector(".btn-hapus").addEventListener("click", async () => {
+  if (!originalNip) return alert("NIP tidak tersedia!");
+
+  const confirmed = confirm("Apakah Anda yakin ingin menghapus data ini?");
+  if (!confirmed) return;
+
+  const result = await ipcRenderer.invoke("delete-user", originalNip);
+
+  if (result.success) {
+    alert("Data berhasil dihapus!");
+    window.location.href = "admin-page.html";
+  } else {
+    alert("Gagal menghapus data!");
+  }
+});
+
+// 🔥 HANDLE EDIT KELUARGA BUTTON
+document.querySelector(".btn-keluarga").addEventListener("click", () => {
+  if (!originalNip) return alert("NIP tidak tersedia!");
+
+  // Misal buka halaman edit keluarga dengan query param nip
+  window.location.href = `edit-keluarga.html?nip=${originalNip}`;
+});
 
 // 🔥 HANDLE SUBMIT UPDATE
 document.getElementById("pegawaiForm").addEventListener("submit", async (e) => {

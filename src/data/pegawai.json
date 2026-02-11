@@ -49,5 +49,22 @@
     "password": "$2b$10$jOOUy9JSNNKCpwdzABW.cuNZSALCsksskK7QZazoCVnRzSl0KepVi",
     "role": "pegawai",
     "foto": "197805162002122003.jpg"
+  },
+  {
+    "nama": "a",
+    "nip": "a",
+    "tempat_lahir": "a",
+    "tanggal_lahir": "1111-11-11",
+    "golongan": "IV/e",
+    "tmt_golongan": "1111-11-11",
+    "jabatan": "1",
+    "tmt_jabatan": "1111-11-11",
+    "jenis_kelamin": "Laki-laki",
+    "masa_kerja": "1111-11-11",
+    "diklat": "1",
+    "ijazah": "1",
+    "password": "$2b$10$RPF6GMPGR8nVc.0X3U.8EuYsslCDNppq74u2W1AhTc.fjoyr5cDrG",
+    "role": "pegawai",
+    "foto": null
   }
 ]

@@ -543,7 +543,10 @@ select {
 }
 
 .akun-button {
-  text-align: center;
-  margin-top: 15px;
-  margin-left: 250px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-left: 36%;
+  margin-top: 25px;
+  flex-wrap: wrap;
 }
