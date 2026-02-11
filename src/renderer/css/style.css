@@ -459,7 +459,7 @@ td small {
 }
 
 #pegawaiTable {
-  table-layout: fixed;
+  table-layout: auto;
   width: 100%;
   font-size: 13px; /* sedikit lebih kecil biar muat */
 }
@@ -478,7 +478,7 @@ td small {
 #pegawaiTable td.td2 {
   width: 180px;
   white-space: normal !important;
-  word-break: break-word;
+  word-break: normal;
 }
 
 #pegawaiTable th:nth-child(1),
