@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Countdown KGB</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body class="dashboard-page1">
+
+  <header class="top-bar2" id="topbar">
+    <a href="all-read-dashboard.html">
+        <img src="../css/images/logo-dpmptsp-v-footer.png"
+            class="logo-mini"
+            alt="Logo DPMPTSP">
+    </a>
+    <img src="../css/images/Lambang_Kota_Kendari.png"
+         class="logo-kota" alt="Logo Kota Kendari">
+
+    <h2>COUNTDOWN KGB</h2>
+  </header>
+
+    <main class="content4">
+      
+    <!-- IMPORTANT PART -->
+    <form id="pegawaiForm">
+      <div class="form-grid">
+
+        <!-- KIRI -->
+        <div>
+          <label>Nama</label>
+          <input type="text" name="nama" required>
+
+          <label>NIP</label>
+          <input type="text" name="nip" required>
+
+          <label>Tempat Lahir</label>
+          <input type="text" name="tempat_lahir">
+
+          <label>Tanggal Lahir</label>
+          <input type="date" name="tanggal_lahir" required>
+
+          <label>Golongan</label>
+          <select name="golongan" required>
+            <option value="">-- Pilih Golongan --</option>
+            <option value="I/a">I/a</option>
+            <option value="I/b">I/b</option>
+            <option value="I/c">I/c</option>
+            <option value="I/d">I/d</option>
+            <option value="II/a">II/a</option>
+            <option value="II/b">II/b</option>
+            <option value="II/c">II/c</option>
+            <option value="II/d">II/d</option>
+            <option value="III/a">III/a</option>
+            <option value="III/b">III/b</option>
+            <option value="III/c">III/c</option>
+            <option value="III/d">III/d</option>
+            <option value="IV/a">IV/a</option>
+            <option value="IV/b">IV/b</option>
+            <option value="IV/c">IV/c</option>
+            <option value="IV/d">IV/d</option>
+            <option value="IV/e">IV/e</option>
+          </select>
+
+          <label>TMT Golongan</label>
+          <input type="date" name="tmt_golongan" required>
+
+          <label>Jabatan</label>
+          <input type="text" name="jabatan">
+
+          <label>TMT Jabatan</label>
+          <input type="date" name="tmt_jabatan" required>
+        </div>
+
+        <!-- KANAN -->
+        <div>
+          <label>Jenis Kelamin</label>
+          <select name="jenis_kelamin" required>
+            <option value="">-- Pilih Jenis Kelamin --</option>
+            <option value="Laki-laki">Laki-laki</option>
+            <option value="Perempuan">Perempuan</option>
+          </select>
+
+          <label>Masa Kerja (berakhir)</label>
+          <input type="date" name="masa_kerja">
+
+          <label>Diklat Penunjang</label>
+          <input type="text" name="diklat">
+
+          <label>Ijazah Terakhir</label>
+          <input type="text" name="ijazah">
+
+          <label>Password</label>
+          <input type="password" name="password" required>
+
+          <label>Role</label>
+          <select name="role" required>
+            <option value="">-- Pilih Role --</option>
+            <option value="admin">Admin</option>
+            <option value="pegawai">Reguler</option>
+          </select>
+        </div>
+
+      </div>
+
+      <div class="akun-button">
+        <button type="submit" class="btn-simpan">SIMPAN</button>
+        <button type="button" class="btn-urungkan" onclick="window.location.href='admin-page.html'">
+          URUNGKAN
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const { ipcRenderer } = require("electron");
+
+    document.getElementById("pegawaiForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const formData = Object.fromEntries(new FormData(e.target).entries());
+
+      const result = await ipcRenderer.invoke("save-pegawai", formData);
+
+      if (result.success) {
+        alert("Data berhasil disimpan!");
+        e.target.reset();
+      } else {
+        alert("Gagal menyimpan data: " + result.message);
+      }
+    });
+  </script>
+
+</body>
+</html>
