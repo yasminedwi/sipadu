@@ -2,20 +2,27 @@ const fs = require("fs");
 const path = require("path");
 const bcrypt = require("bcryptjs");
 
-const filePath = path.join(__dirname, "../../data", "users.json");
+const filePath = path.join(__dirname, "../../data", "pegawai.json"); 
+// Adjust path if needed
 
 function loadUsers() {
-  if (!fs.existsSync(filePath)) return [];
-  return JSON.parse(fs.readFileSync(filePath, "utf-8"));
+  try {
+    if (!fs.existsSync(filePath)) return [];
+    return JSON.parse(fs.readFileSync(filePath, "utf-8"));
+  } catch (err) {
+    console.error("Error reading pegawai.json:", err);
+    return [];
+  }
 }
 
 function login() {
-  const nip = document.querySelector('input[name="nip"]').value;
-  const password = document.querySelector('input[name="password"]').value;
+  const nip = document.getElementById("nip").value.trim();
+  const password = document.getElementById("password").value.trim();
   const errorBox = document.getElementById("error");
 
   const users = loadUsers();
-  const user = users.find(u => u.nip === nip);
+
+  const user = users.find(u => String(u.nip) === nip);
 
   if (!user) {
     errorBox.innerText = "NIP atau password salah";
@@ -29,7 +36,6 @@ function login() {
     return;
   }
 
-  // store logged-in user (used by dashboard)
   localStorage.setItem(
     "loginUser",
     JSON.stringify({
@@ -38,7 +44,6 @@ function login() {
     })
   );
 
-  // ✅ ONE dashboard for ALL roles
   window.location.href = "all-read-dashboard.html";
 }
 

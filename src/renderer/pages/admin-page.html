@@ -2,23 +2,34 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Page</title>
   <link rel="stylesheet" href="../css/style.css">
 </head>
-<body class="admin-page">
 
-  <header class="top-bar">
+<body class="dashboard-page">
+
+  <header class="top-bar" id="topbar">
+
+    <div id="adminArea">
+      <button class="admin-btn"
+        onclick="window.location.href='admin-page.html'">
+        ADMIN
+      </button>
+    </div>
+
     <img src="../css/images/logo-dpmptsp-v-footer.png"
-         class="logo"
-         style="width: 60px; height: 60px; margin-left: 30%;">
+         class="logo-mini" alt="Logo DPMPTSP">
+    <img src="../css/images/Lambang_Kota_Kendari.png"
+         class="logo-kota" alt="Logo Kota Kendari">
 
     <nav>
-      <button class="nav-btn active"
-        onclick="window.location.href='admin-page.html'">
+      <button class="nav-btn"
+        onclick="window.location.href='all-read-dashboard.html'">
         BERANDA
       </button>
 
-      <button class="nav-btn"
+      <button class="nav-btn1"
         onclick="window.location.href='all-edit-pengaturan-akun.html'">
         AKUN
       </button>
@@ -31,13 +42,13 @@
   </header>
 
   <!-- background layer -->
-  <main class="content2"></main>
-  <main class="content3"></main>
+  <div class="content1"></div>
+  <div class="content2"></div>
+  <div class="content3"></div>
 
   <!-- konten utama -->
   <main class="content">
     <div class="cards">
-
       <button class="card red"
         onclick="window.location.href='admin-add-pegawai.html'">
         Register<br>Pegawai Baru
@@ -50,6 +61,25 @@
 
     </div>
   </main>
+
+  <!-- ROLE CHECK -->
+  <script>
+    const loginUser = JSON.parse(localStorage.getItem("loginUser"));
+
+    if (!loginUser) {
+      window.location.href = "index.html";
+    }
+
+    const adminArea = document.getElementById("adminArea");
+    const topBar = document.getElementById("topBar");
+
+    if (loginUser.role !== "admin") {
+      adminArea.style.display = "none";
+    } else {
+      topBar.classList.add("admin-top-bar");
+    }
+  </script>
+
 
 </body>
 </html>

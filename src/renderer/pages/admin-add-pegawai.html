@@ -2,60 +2,26 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Input Pegawai Baru</title>
   <link rel="stylesheet" href="../css/style.css">
-
-  <style>
-    .content {
-      padding: 20px 60px;
-    }
-    h2 {
-      margin-bottom: 20px;
-      font-size: 20px;
-    }
-    form label {
-      font-size: 13px;
-      margin-top: 6px;
-    }
-    form input {
-      height: 30px;
-      padding: 4px 8px;
-      font-size: 13px;
-      margin-bottom: 6px;
-    }
-    .form-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 40px;
-    }
-    .akun-button {
-      margin-top: 15px;
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-    }
-    .btn-simpan,
-    .btn-urungkan {
-      padding: 8px 20px;
-      font-size: 13px;
-      cursor: pointer;
-    }
-  </style>
 </head>
 
-<body class="dashboard-page">
+<body class="dashboard-page1">
 
-  <div class="top-bar">
-    <nav>
-      <button class="nav-btn active">Input Pegawai Baru</button>
-    </nav>
-  </div>
+  <header class="top-bar2" id="topbar">
+    <img src="../css/images/logo-dpmptsp-v-footer.png"
+      class="logo-mini" alt="Logo DPMPTSP">
+    <img src="../css/images/Lambang_Kota_Kendari.png"
+      class="logo-kota" alt="Logo Kota Kendari">
 
-  <div class="content">
     <h2>INPUT PEGAWAI BARU</h2>
+  </header>
 
+    <main class="content4">
+      
     <!-- IMPORTANT PART -->
-    <form action="admin-add-pegawai.php" method="POST">
+    <form id="pegawaiForm">
       <div class="form-grid">
 
         <!-- KIRI -->
@@ -70,28 +36,51 @@
           <input type="text" name="tempat_lahir">
 
           <label>Tanggal Lahir</label>
-          <input type="date" name="tanggal_lahir">
+          <input type="date" name="tanggal_lahir" required>
 
           <label>Golongan</label>
-          <input type="text" name="golongan">
+          <select name="golongan" required>
+            <option value="">-- Pilih Golongan --</option>
+            <option value="I/a">I/a</option>
+            <option value="I/b">I/b</option>
+            <option value="I/c">I/c</option>
+            <option value="I/d">I/d</option>
+            <option value="II/a">II/a</option>
+            <option value="II/b">II/b</option>
+            <option value="II/c">II/c</option>
+            <option value="II/d">II/d</option>
+            <option value="III/a">III/a</option>
+            <option value="III/b">III/b</option>
+            <option value="III/c">III/c</option>
+            <option value="III/d">III/d</option>
+            <option value="IV/a">IV/a</option>
+            <option value="IV/b">IV/b</option>
+            <option value="IV/c">IV/c</option>
+            <option value="IV/d">IV/d</option>
+            <option value="IV/e">IV/e</option>
+          </select>
 
           <label>TMT Golongan</label>
-          <input type="date" name="tmt_golongan">
+          <input type="date" name="tmt_golongan" required>
 
           <label>Jabatan</label>
           <input type="text" name="jabatan">
+
+          <label>TMT Jabatan</label>
+          <input type="date" name="tmt_jabatan" required>
         </div>
 
         <!-- KANAN -->
         <div>
-          <label>Gol Jabatan</label>
-          <input type="text" name="gol_jabatan">
-
           <label>Jenis Kelamin</label>
-          <input type="text" name="jenis_kelamin">
+          <select name="jenis_kelamin" required>
+            <option value="">-- Pilih Jenis Kelamin --</option>
+            <option value="Laki-laki">Laki-laki</option>
+            <option value="Perempuan">Perempuan</option>
+          </select>
 
-          <label>Masa Kerja</label>
-          <input type="number" name="masa_kerja">
+          <label>Masa Kerja (berakhir)</label>
+          <input type="date" name="masa_kerja">
 
           <label>Diklat Penunjang</label>
           <input type="text" name="diklat">
@@ -99,21 +88,43 @@
           <label>Ijazah Terakhir</label>
           <input type="text" name="ijazah">
 
-          <label>Keluarga</label>
-          <input type="text" name="keluarga">
-
           <label>Password</label>
           <input type="password" name="password" required>
+
+          <label>Role</label>
+          <select name="role" required>
+            <option value="">-- Pilih Role --</option>
+            <option value="admin">Admin</option>
+            <option value="pegawai">Reguler</option>
+          </select>
         </div>
 
       </div>
 
       <div class="akun-button">
         <button type="submit" class="btn-simpan">SIMPAN</button>
-        <a href="admin-page.html" class="btn-urungkan">URUNGKAN</a>
       </div>
     </form>
   </div>
+
+  <script>
+    const { ipcRenderer } = require("electron");
+
+    document.getElementById("pegawaiForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const formData = Object.fromEntries(new FormData(e.target).entries());
+
+      const result = await ipcRenderer.invoke("save-pegawai", formData);
+
+      if (result.success) {
+        alert("Data berhasil disimpan!");
+        e.target.reset();
+      } else {
+        alert("Gagal menyimpan data.");
+      }
+    });
+  </script>
 
 </body>
 </html>

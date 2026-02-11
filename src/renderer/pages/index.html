@@ -26,12 +26,12 @@
       <p id="error" style="color:red; margin-bottom:10px"></p>
 
       <!-- LOGIN FORM -->
-      <form onsubmit="login(); return false;">
+      <form id="loginForm">
         <label>NIP</label>
-        <input type="text" name="nip" placeholder="Masukkan NIP" required>
+        <input type="text" id="nip" placeholder="Masukkan NIP" required>
 
         <label>Password</label>
-        <input type="password" name="password" placeholder="Masukkan Password" required>
+        <input type="password" id="password" placeholder="Masukkan Password" required>
 
         <button type="submit">LOGIN</button>
       </form>
@@ -41,6 +41,11 @@
 
   <script>
     const { login } = require("../js/login");
+
+    document.getElementById("loginForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      login();
+    });
   </script>
 
 </body>
