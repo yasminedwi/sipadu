@@ -1,20 +1,20 @@
 [
   {
-    "Nama": "Nukke Djuwita Isamu, S.Kom., M.Si.",
+    "nama": "Nukke Djuwita Isamu, S.Kom., M.Si.",
     "nip": "123",
-    "Tempat_Lahir": "Kendari",
-    "Tanggal_Lahir": "05/04/1975",
-    "Golongan": "IV/b",
-    "TMT_Golongan": "10/01/2020",
-    "Jabatan": "Sekretaris Dinas Penanaman Modal dan Pelayanan Terpadu Satu Pintu",
-    "TMT_Jabatan": "01/02/2020",
-    "Jenis_Kelamin": "Perempuan",
-    "Masa_Kerja": "08/11/2048",
-    "Diklat": "Diklat PIM Tingkat IV Tahun 2009",
-    "Ijazah_Terakhir": "S-2 Manajemen SDM",
-    "password": "$2b$10$y0XD6APXbMMMrGdn5yB0E.GCNiSrvHgHkqKnK0fgEMQq2UtRKbbMe",
+    "tempat_lahir": "Kendari",
+    "tanggal_lahir": "05/04/1975",
+    "golongan": "IV/b",
+    "tmt_golongan": "10/01/2020",
+    "jabatan": "Sekretaris Dinas Penanaman Modal dan Pelayanan Terpadu Satu Pintu",
+    "tmt_jabatan": "01/02/2020",
+    "jenis_kelamin": "Perempuan",
+    "masa_kerja": "08/11/2048",
+    "diklat": "Diklat PIM Tingkat IV Tahun 2009",
+    "ijazah_terakhir": "S-2 Manajemen SDM",
+    "password": "$2b$10$QEavaqz3bifNV8/gO8fCC.za3.zsW1KLktzwI7wxdMGOukOow3Nxm",
     "role": "admin",
-    "foto": "null.jpg"
+    "foto": "111.png"
   },
   {
     "nama": "Baharuddin, SE. M.Si.",
@@ -30,7 +30,8 @@
     "diklat": "Diklat PIM Tingkat IV",
     "ijazah": "S-2 Administrasi Pembangunan",
     "password": "$2b$10$LfOMGwyH3.e.awh1PW55qOVOOn0nhj026T/gr0dCsEPY6e9rB.32a",
-    "role": "pegawai"
+    "role": "pegawai",
+    "foto": "197207271994021002.jpg"
   },
   {
     "nama": "Irnayanti Bisma, S.Si., M.Si.",
@@ -47,6 +48,6 @@
     "ijazah": "S-2",
     "password": "$2b$10$jOOUy9JSNNKCpwdzABW.cuNZSALCsksskK7QZazoCVnRzSl0KepVi",
     "role": "pegawai",
-    "foto": null
+    "foto": "197805162002122003.jpg"
   }
 ]

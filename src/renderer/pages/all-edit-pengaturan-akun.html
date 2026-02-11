@@ -52,7 +52,7 @@
         <div class="akun-left">
             <p>Foto Profil</p>
             <div class="foto-profil">
-                <img id="previewFoto" width="120">
+                <img id="previewFoto" width="120" height="120" style="object-fit: cover;">
                 <input type="file" id="profilePic" accept="image/*">
             </div>
         </div>
@@ -85,73 +85,97 @@
 </main>
       <!-- ROLE CHECK -->
     <script>
-        const { ipcRenderer } = require("electron");
+    const { ipcRenderer } = require("electron");
 
-        const form = document.getElementById("editForm");
+    const loginUser = JSON.parse(localStorage.getItem("loginUser"));
 
-        if (!loginUser) {
-        window.location.href = "login.html";
-        }
+    if (!loginUser) {
+        window.location.href = "index.html";
+    }
 
-        const adminArea = document.getElementById("adminArea");
-        const topBar = document.getElementById("topBar");
+    const form = document.getElementById("editForm");
+    const adminArea = document.getElementById("adminArea");
+    const topBar = document.getElementById("topBar");
+    const previewFoto = document.getElementById("previewFoto");
+    const fileInput = document.getElementById("profilePic");
 
-        if (loginUser.role !== "admin") {
+    if (loginUser.role !== "admin") {
         adminArea.style.display = "none";
-        } else {
+    } else {
         topBar.classList.add("admin-top-bar");
+    }
+
+    // ==========================
+    // LOAD USER
+    // ==========================
+    async function loadUser() {
+        const result = await ipcRenderer.invoke("get-user", loginUser.nip);
+        if (!result.success) return;
+
+        document.getElementById("nama").value = result.user.nama;
+        document.getElementById("nip").value = result.user.nip;
+
+        if (result.user.foto) {
+            const base64 = await ipcRenderer.invoke(
+                "get-photo-base64",
+                result.user.foto
+            );
+
+            previewFoto.src = base64 || "";
+        } else {
+            previewFoto.src = "";
         }
+    }
+
+    loadUser();
+
+    // ==========================
+    // PREVIEW FOTO (FIXED)
+    // ==========================
+    fileInput.addEventListener("change", function () {
+        const file = this.files[0];
+        if (!file) return;
+
+        const imageURL = URL.createObjectURL(file);
+        previewFoto.src = imageURL;
+    });
+
+    // ==========================
+    // SAVE UPDATE
+    // ==========================
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const file = fileInput.files[0];
+        let fileBuffer = null;
+        let fileName = null;
+
+        if (file) {
+            fileBuffer = await file.arrayBuffer();
+            fileName = file.name;
+        }
+
+        const result = await ipcRenderer.invoke("update-user", {
+            oldNip: loginUser.nip,
+            newNip: document.getElementById("nip").value,
+            nama: document.getElementById("nama").value,
+            password: document.getElementById("password").value,
+            fileBuffer: fileBuffer,
+            fileName: fileName
+        });
+
+        if (result.success) {
+            alert("Akun berhasil diupdate!");
+
+            loginUser.nip = document.getElementById("nip").value;
+            localStorage.setItem("loginUser", JSON.stringify(loginUser));
+
+            loadUser();
+        } else {
+            alert("Gagal update akun!");
+        }
+    });
     </script>
-
-    <script>
-        const { ipcRenderer } = require("electron");
-
-        const form = document.getElementById("editForm");
-
-        // LOAD DATA USER
-        async function loadUser() {
-            const result = await ipcRenderer.invoke("get-user", loginUser.nip);
-
-            if (result.success) {
-                document.getElementById("nama").value = result.user.nama;
-                document.getElementById("nip").value = result.user.nip;
-
-                if (result.user.foto) {
-                    document.getElementById("previewFoto").src = result.user.foto;
-                }
-            }
-        }
-
-        loadUser();
-
-        // PREVIEW FOTO
-        document.getElementById("profilePic").addEventListener("change", (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                document.getElementById("previewFoto").src = file.path;
-            }
-        });
-
-        // SAVE PERUBAHAN
-        form.addEventListener("submit", async (e) => {
-            e.preventDefault();
-
-            const fileInput = document.getElementById("profilePic");
-
-            const result = await ipcRenderer.invoke("update-user", {
-                nip: loginUser.nip,
-                nama: document.getElementById("nama").value,
-                password: document.getElementById("password").value,
-                filePath: fileInput.files[0] ? fileInput.files[0].path : null
-            });
-
-            if (result.success) {
-                alert("Akun berhasil diupdate!");
-            } else {
-                alert("Gagal update akun");
-            }
-        });
-        </script>
 
 </body>
 </html>
