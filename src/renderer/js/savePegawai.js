@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const filePath = path.join(__dirname, "../.../data", "pegawai.json");
+const filePath = path.join(__dirname, "../.../src/data", "pegawai.json");
 
 function savePegawai(data) {
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2));

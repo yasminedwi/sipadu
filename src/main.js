@@ -3,7 +3,7 @@ const path = require("path");
 const fs = require("fs");
 const bcrypt = require("bcryptjs");
 
-const filePath = path.join(__dirname, "../../data", "pegawai.json");
+const filePath = path.join(__dirname, "data", "pegawai.json");
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -87,6 +87,7 @@ ipcMain.handle("login", async (event, { nip, password }) => {
     return { success: true, role: user.role };
 
   } catch (error) {
-    return { success: false };
+    console.error("ERROR SAVE:", error);
+    return { success: false, message: error.message };
   }
 });
