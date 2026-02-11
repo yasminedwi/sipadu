@@ -9,11 +9,52 @@
 
 <body class="dashboard-page1">
 
+<<<<<<< HEAD
   <header class="top-bar2" id="topbar">
     <img src="../css/images/logo-dpmptsp-v-footer.png"
       class="logo-mini" alt="Logo DPMPTSP">
     <img src="../css/images/Lambang_Kota_Kendari.png"
       class="logo-kota" alt="Logo Kota Kendari">
+=======
+  <!-- TOP BAR / NAV LAYER -->
+  <header class="top-bar" id="topBar">
+
+    <!-- ADMIN AREA -->
+    <div id="adminArea">
+      <button class="admin-btn"
+        onclick="window.location.href='admin-page.html'">
+        ADMIN
+      </button>
+    </div>
+
+    <img src="../css/images/logo-dpmptsp-v-footer.png"
+         class="logo-mini" alt="Logo DPMPTSP">
+    <img src="../css/images/Lambang_Kota_Kendari.png"
+         class="logo-kota" alt="Logo Kota Kendari">
+
+    <nav>
+      <button class="nav-btn active"
+        onclick="window.location.href='all-read-dashboard.html'">
+        BERANDA
+      </button>
+
+      <button class="nav-btn1"
+        onclick="window.location.href='all-edit-pengaturan-akun.html'">
+        AKUN
+      </button>
+
+      <button class="nav-btn2"
+        onclick="window.location.href='all-konfirmasi-logout.html'">
+        KELUAR
+      </button>
+    </nav>
+  </header>
+
+  <!-- CONTENT LAYERS -->
+  <div class="content1"></div>
+  <div class="content2"></div>
+  <div class="content3"></div>
+>>>>>>> 9df50c08185657ed99ac6e04a9d9642db93b085a
 
     <h2>INPUT PEGAWAI BARU</h2>
   </header>
@@ -72,6 +113,7 @@
 
         <!-- KANAN -->
         <div>
+<<<<<<< HEAD
           <label>Jenis Kelamin</label>
           <select name="jenis_kelamin" required>
             <option value="">-- Pilih Jenis Kelamin --</option>
@@ -81,6 +123,24 @@
 
           <label>Masa Kerja (berakhir)</label>
           <input type="date" name="masa_kerja">
+=======
+          <label>TMT Jabatan</label>
+          <input type="date" name="tmt_jabatan">
+
+          <label>Jenis Kelamin</label>
+          <select name="jenis_kelamin" required>
+            <option value="">-- Pilih Jenis Kelamin --</option>
+            <option value="Perempuan">Perempuan</option>
+            <option value="Laki-laki">Laki-laki</option>
+          </select>
+
+          <label>Masa Kerja</label>
+          <div style="display: flex; gap: 10px;">
+            <input type="number" name="masa_kerja_tahun" placeholder="Tahun" min="0">
+            <input type="number" name="masa_kerja_bulan" placeholder="Bulan" min="0" max="11">
+          </div>
+
+>>>>>>> 9df50c08185657ed99ac6e04a9d9642db93b085a
 
           <label>Diklat Penunjang</label>
           <input type="text" name="diklat">
@@ -88,6 +148,12 @@
           <label>Ijazah Terakhir</label>
           <input type="text" name="ijazah">
 
+<<<<<<< HEAD
+=======
+          <label>Usia</label>
+          <input type="number" name="keluarga" placeholder="Tahun" min="0">
+
+>>>>>>> 9df50c08185657ed99ac6e04a9d9642db93b085a
           <label>Password</label>
           <input type="password" name="password" required>
 
@@ -103,6 +169,12 @@
 
       <div class="akun-button">
         <button type="submit" class="btn-simpan">SIMPAN</button>
+<<<<<<< HEAD
+=======
+        <button type="button" class="btn-urungkan" onclick="window.location.href='admin-page.html'">
+          URUNGKAN
+        </button>
+>>>>>>> 9df50c08185657ed99ac6e04a9d9642db93b085a
       </div>
     </form>
   </div>
