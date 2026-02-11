@@ -5,41 +5,48 @@ document.addEventListener("DOMContentLoaded", function () {
   const path = require("path");
   const fs = require("fs");
 
-  const filePath = path.join(__dirname, "../../data/pegawai.json");
-  const rawData = fs.readFileSync(filePath);
-  let pegawaiData = JSON.parse(rawData);
+  // File paths
+  const pegawaiFilePath = path.join(__dirname, "../../data/pegawai.json");
+  const keluargaFilePath = path.join(__dirname, "../../data/keluarga.json");
+
+  // Baca data pegawai
+  const rawPegawai = fs.readFileSync(pegawaiFilePath);
+  let pegawaiData = JSON.parse(rawPegawai);
+
+  // Baca data keluarga
+  let keluargaData = [];
+  if (fs.existsSync(keluargaFilePath)) {
+    const rawKeluarga = fs.readFileSync(keluargaFilePath);
+    keluargaData = JSON.parse(rawKeluarga);
+  }
 
   const today = new Date();
 
-  // Calculate next TMT properly
+  // Hitung next TMT
   pegawaiData.forEach(p => {
-        const [year, month, day] = p.tmt_golongan.split("-").map(Number);
-        let tmtDate = new Date(year, month - 1, day); // LOCAL time
+    const [year, month, day] = p.tmt_golongan.split("-").map(Number);
+    let tmtDate = new Date(year, month - 1, day);
 
-    // Calculate number of 2-year jumps needed
     let diffYears = today.getFullYear() - tmtDate.getFullYear();
     if (
       today.getMonth() > tmtDate.getMonth() ||
       (today.getMonth() === tmtDate.getMonth() && today.getDate() > tmtDate.getDate())
     ) {
-      diffYears += 1; // if past month/day, add 1
+      diffYears += 1;
     }
     const jumps = Math.ceil(diffYears / 2);
     tmtDate.setFullYear(tmtDate.getFullYear() + jumps * 2);
 
     p.next_tmt = new Date(tmtDate);
+
+    // assign keluarga berdasarkan NIP
+    p.keluarga = keluargaData.filter(k => k.nip === p.nip);
   });
 
-  // Sort by closest upcoming deadline
+  // Sort by next TMT
   pegawaiData.sort((a, b) => a.next_tmt - b.next_tmt);
 
-  // Helper: days until next TMT
-  function getDaysUntil(date) {
-    const now = new Date();
-    const diffTime = date - now;
-    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  }
-
+  // Helper
   function formatDate(date) {
     const y = date.getFullYear();
     const m = String(date.getMonth() + 1).padStart(2, "0");
@@ -47,79 +54,74 @@ document.addEventListener("DOMContentLoaded", function () {
     return `${y}-${m}-${d}`;
   }
 
-    function renderTable(data) {
+  function renderTable(data) {
     tableBody.innerHTML = "";
 
     data.forEach((pegawai, index) => {
+      let keluargaDropdown = "";
 
-        let keluargaDropdown = "";
-
-        if (pegawai.keluarga && pegawai.keluarga.length > 0) {
-
-        let options = pegawai.keluarga.map((k, i) => {
-            return `<option value="${i}">
-                    ${k.hubungan} - ${k.nama}
-                    </option>`;
-        }).join("");
+      if (pegawai.keluarga && pegawai.keluarga.length > 0) {
+        const options = pegawai.keluarga
+          .map(
+            (k, i) =>
+              `<option value="${i}">${k.role} - ${k.nama}</option>`
+          )
+          .join("");
 
         keluargaDropdown = `
-            <select class="keluarga-select" data-nip="${pegawai.nip}">
+          <select class="keluarga-select" data-nip="${pegawai.nip}">
             <option value="">-- Pilih Keluarga --</option>
             ${options}
-            </select>
+          </select>
         `;
-
-        } else {
-
+      } else {
         keluargaDropdown = `
-            <select disabled>
+          <select disabled>
             <option>Tidak Ada Data</option>
-            </select>
+          </select>
         `;
-        }
+      }
 
-        const row = `
+      const row = `
         <tr>
-            <td>${index + 1}</td>
-            <td>${pegawai.nama}</td>
-            <td>${pegawai.golongan}</td>
-            <td>${formatDate(pegawai.next_tmt)}</td>
-            <td>${pegawai.jabatan}</td>
-            <td>${pegawai.jenis_kelamin}</td>
-            <td>${keluargaDropdown}</td>
+          <td>${index + 1}</td>
+          <td>${pegawai.nama}</td>
+          <td>${pegawai.golongan}</td>
+          <td>${formatDate(pegawai.next_tmt)}</td>
+          <td>${pegawai.jabatan}</td>
+          <td>${pegawai.jenis_kelamin}</td>
+          <td>${keluargaDropdown}</td>
         </tr>
-        `;
+      `;
 
-        tableBody.innerHTML += row;
+      tableBody.innerHTML += row;
     });
-    }
+  }
 
   renderTable(pegawaiData);
 
-    tableBody.addEventListener("change", function (e) {
-
+  // Event dropdown keluarga
+  tableBody.addEventListener("change", function (e) {
     if (e.target.classList.contains("keluarga-select")) {
+      const nip = e.target.dataset.nip;
+      const keluargaIndex = e.target.value;
+      if (keluargaIndex === "") return;
 
-        const nip = e.target.dataset.nip;
-        const keluargaIndex = e.target.value;
+      const selectedPegawai = pegawaiData.find(p => p.nip === nip);
+      if (!selectedPegawai) return;
 
-        if (keluargaIndex === "") return;
+      const selectedKeluarga = selectedPegawai.keluarga[keluargaIndex];
 
-        const selectedPegawai = pegawaiData.find(p => p.nip === nip);
-        if (!selectedPegawai) return;
-
-        const selectedKeluarga = selectedPegawai.keluarga[keluargaIndex];
-
-        alert(
-    `Hubungan: ${selectedKeluarga.hubungan}
-    Nama: ${selectedKeluarga.nama}
-    Tanggal Lahir: ${selectedKeluarga.tanggal_lahir}
-    Jenis Kelamin: ${selectedKeluarga.jenis_kelamin}
-    Pekerjaan: ${selectedKeluarga.pekerjaan}
-    Status Tanggungan: ${selectedKeluarga.tanggungan}`
-        );
+      alert(
+        `Hubungan: ${selectedKeluarga.role}\n` +
+        `Nama: ${selectedKeluarga.nama}\n` +
+        `Tanggal Lahir: ${selectedKeluarga.tanggal_lahir}\n` +
+        `Jenis Kelamin: ${selectedKeluarga.jenis_kelamin}\n` +
+        `Pekerjaan: ${selectedKeluarga.pekerjaan}\n` +
+        `Status Tanggungan: ${selectedKeluarga.tanggungan}`
+      );
     }
-    });
+  });
 
   // Search filter
   searchInput.addEventListener("keyup", function () {
@@ -127,8 +129,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const filtered = pegawaiData.filter(p =>
       p.nama.toLowerCase().includes(keyword) ||
-      p.golongan.toLowerCase().includes(keyword) ||
-      p.jabatan.toLowerCase().includes(keyword)
+      (p.golongan && p.golongan.toLowerCase().includes(keyword)) ||
+      (p.jabatan && p.jabatan.toLowerCase().includes(keyword))
     );
 
     renderTable(filtered);
