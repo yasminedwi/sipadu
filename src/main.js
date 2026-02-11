@@ -1,9 +1,13 @@
+// src/main.js
 const { app, BrowserWindow, ipcMain, screen } = require("electron");
 const path = require("path");
 const fs = require("fs");
 const bcrypt = require("bcryptjs");
 
-const filePath = path.join(__dirname, "data", "pegawai.json");
+// Paths
+const pegawaiFile = path.join(__dirname, "data", "pegawai.json");
+const keluargaFile = path.join(__dirname, "data", "keluarga.json");
+const profilePicsDir = path.join(__dirname, "data", "profile_pics");
 
 /* =========================
    CREATE WINDOW
@@ -12,8 +16,8 @@ function createWindow() {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
 
   const win = new BrowserWindow({
-    width: width,
-    height: height,
+    width,
+    height,
     resizable: false,
     maximizable: false,
     webPreferences: {
@@ -28,19 +32,32 @@ function createWindow() {
 
 app.whenReady().then(createWindow);
 
+/* =========================
+   UTILS
+========================= */
+function readJSON(filePath) {
+  if (!fs.existsSync(filePath)) return [];
+  return JSON.parse(fs.readFileSync(filePath, "utf-8"));
+}
+
+function writeJSON(filePath, data) {
+  fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+}
+
+if (!fs.existsSync(profilePicsDir)) fs.mkdirSync(profilePicsDir, { recursive: true });
 
 /* =========================
-   SAVE PEGAWAI
+   PEGAWAI CRUD
 ========================= */
 ipcMain.handle("save-pegawai", async (event, formData) => {
   try {
-    let data = [];
+    let data = readJSON(pegawaiFile);
 
-    if (fs.existsSync(filePath)) {
-      data = JSON.parse(fs.readFileSync(filePath, "utf-8"));
+    // Password wajib, tapi boleh kosong
+    let hashedPassword = null;
+    if (formData.password && formData.password.trim() !== "") {
+      hashedPassword = await bcrypt.hash(formData.password, 10);
     }
-
-    const hashedPassword = await bcrypt.hash(formData.password, 10);
 
     const newPegawai = {
       ...formData,
@@ -49,29 +66,103 @@ ipcMain.handle("save-pegawai", async (event, formData) => {
     };
 
     data.push(newPegawai);
-
-    fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+    writeJSON(pegawaiFile, data);
 
     return { success: true };
+  } catch (err) {
+    console.error("SAVE PEGAWAI ERROR:", err);
+    return { success: false, message: err.message };
+  }
+});
 
-  } catch (error) {
-    console.error("SAVE ERROR:", error);
+ipcMain.handle("get-user", async (event, nip) => {
+  try {
+    const data = readJSON(pegawaiFile);
+    const user = data.find(p => String(p.nip) === String(nip));
+    if (!user) return { success: false };
+    return { success: true, user };
+  } catch (err) {
+    console.error("GET USER ERROR:", err);
     return { success: false };
   }
 });
 
+ipcMain.handle("update-user", async (event, dataInput) => {
+  try {
+    const data = readJSON(pegawaiFile);
+    const user = data.find(p => String(p.nip) === String(dataInput.oldNip));
+    if (!user) return { success: false };
+
+    // Update fields
+    Object.assign(user, {
+      nama: dataInput.nama,
+      nip: dataInput.nip,
+      tempat_lahir: dataInput.tempat_lahir,
+      tanggal_lahir: dataInput.tanggal_lahir,
+      golongan: dataInput.golongan,
+      tmt_golongan: dataInput.tmt_golongan,
+      jabatan: dataInput.jabatan,
+      tmt_jabatan: dataInput.tmt_jabatan,
+      jenis_kelamin: dataInput.jenis_kelamin,
+      masa_kerja: dataInput.masa_kerja,
+      diklat: dataInput.diklat,
+      ijazah: dataInput.ijazah,
+      role: dataInput.role
+    });
+
+    // Optional password update
+    if (dataInput.password && dataInput.password.trim() !== "") {
+      user.password = await bcrypt.hash(dataInput.password, 10);
+    }
+
+    // Handle photo
+    if (dataInput.fileBuffer && dataInput.fileName) {
+      if (user.foto) {
+        const oldPhoto = path.join(profilePicsDir, user.foto);
+        if (fs.existsSync(oldPhoto)) fs.unlinkSync(oldPhoto);
+      }
+
+      const ext = path.extname(dataInput.fileName);
+      const newFileName = dataInput.nip + "_" + Date.now() + ext;
+      fs.writeFileSync(path.join(profilePicsDir, newFileName), Buffer.from(dataInput.fileBuffer));
+      user.foto = newFileName;
+    }
+
+    writeJSON(pegawaiFile, data);
+    return { success: true };
+  } catch (err) {
+    console.error("UPDATE USER ERROR:", err);
+    return { success: false };
+  }
+});
+
+ipcMain.handle("delete-user", async (event, nip) => {
+  try {
+    const data = readJSON(pegawaiFile);
+    const index = data.findIndex(p => String(p.nip) === String(nip));
+    if (index === -1) return { success: false, error: "User tidak ditemukan" };
+
+    const user = data[index];
+    if (user.foto) {
+      const photoPath = path.join(profilePicsDir, user.foto);
+      if (fs.existsSync(photoPath)) fs.unlinkSync(photoPath);
+    }
+
+    data.splice(index, 1);
+    writeJSON(pegawaiFile, data);
+    return { success: true };
+  } catch (err) {
+    console.error("DELETE USER ERROR:", err);
+    return { success: false, error: err.message };
+  }
+});
 
 /* =========================
    LOGIN
 ========================= */
 ipcMain.handle("login", async (event, { nip, password }) => {
   try {
-    if (!fs.existsSync(filePath)) {
-      return { success: false };
-    }
-
-    const data = JSON.parse(fs.readFileSync(filePath, "utf-8"));
-
+    const data = readJSON(pegawaiFile);
     const user = data.find(p => String(p.nip) === String(nip));
     if (!user) return { success: false };
 
@@ -79,103 +170,43 @@ ipcMain.handle("login", async (event, { nip, password }) => {
     if (!match) return { success: false };
 
     return { success: true, role: user.role };
-
-  } catch (error) {
-    console.error("LOGIN ERROR:", error);
+  } catch (err) {
+    console.error("LOGIN ERROR:", err);
     return { success: false };
   }
 });
 
-
 /* =========================
-   GET USER (FOR EDIT PAGE)
+   KELUARGA CRUD
 ========================= */
-ipcMain.handle("get-user", async (event, nip) => {
+ipcMain.handle("save-keluarga", async (event, formData) => {
   try {
-    if (!fs.existsSync(filePath)) {
-      return { success: false };
-    }
+    if (!formData.nip) return { success: false, message: "NIP pegawai tidak ditemukan" };
 
-    const data = JSON.parse(fs.readFileSync(filePath, "utf-8"));
+    let data = readJSON(keluargaFile);
 
-    const user = data.find(p => String(p.nip) === String(nip));
-    if (!user) return { success: false };
+    const newKeluarga = {
+      ...formData,
+      id: Date.now() // id unik
+    };
 
-    return { success: true, user };
-
-  } catch (error) {
-    console.error("GET USER ERROR:", error);
-    return { success: false };
-  }
-});
-
-
-/* =========================
-   UPDATE USER
-========================= */
-ipcMain.handle("update-user", async (event, dataInput) => {
-  try {
-    if (!fs.existsSync(filePath)) {
-      return { success: false };
-    }
-
-    const data = JSON.parse(fs.readFileSync(filePath, "utf-8"));
-
-    const user = data.find(p => String(p.nip) === String(dataInput.oldNip));
-    if (!user) return { success: false };
-
-    const picDir = path.join(__dirname, "data", "profile_pics");
-    if (!fs.existsSync(picDir)) {
-      fs.mkdirSync(picDir, { recursive: true });
-    }
-
-    // UPDATE FIELD
-    user.nama = dataInput.nama;
-    user.nip = dataInput.nip;
-    user.tempat_lahir = dataInput.tempat_lahir;
-    user.tanggal_lahir = dataInput.tanggal_lahir;
-    user.golongan = dataInput.golongan;
-    user.tmt_golongan = dataInput.tmt_golongan;
-    user.jabatan = dataInput.jabatan;
-    user.tmt_jabatan = dataInput.tmt_jabatan;
-    user.jenis_kelamin = dataInput.jenis_kelamin;
-    user.masa_kerja = dataInput.masa_kerja;
-    user.diklat = dataInput.diklat;
-    user.ijazah = dataInput.ijazah;
-    user.role = dataInput.role;
-
-    // UPDATE PASSWORD (optional)
-    if (dataInput.password && dataInput.password.trim() !== "") {
-      const hashed = await bcrypt.hash(dataInput.password, 10);
-      user.password = hashed;
-    }
-
-    // HANDLE FOTO
-    if (dataInput.fileBuffer && dataInput.fileName) {
-
-      // hapus foto lama
-      if (user.foto) {
-        const oldPhotoPath = path.join(picDir, user.foto);
-        if (fs.existsSync(oldPhotoPath)) {
-          fs.unlinkSync(oldPhotoPath);
-        }
-      }
-
-      const ext = path.extname(dataInput.fileName);
-      const newFileName = dataInput.nip + "_" + Date.now() + ext;
-      const newPath = path.join(picDir, newFileName);
-
-      fs.writeFileSync(newPath, Buffer.from(dataInput.fileBuffer));
-
-      user.foto = newFileName;
-    }
-
-    fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+    data.push(newKeluarga);
+    writeJSON(keluargaFile, data);
 
     return { success: true };
+  } catch (err) {
+    console.error("SAVE KELUARGA ERROR:", err);
+    return { success: false, message: err.message };
+  }
+});
 
-  } catch (error) {
-    console.error("UPDATE ERROR:", error);
+ipcMain.handle("get-keluarga", async (event, nip) => {
+  try {
+    const data = readJSON(keluargaFile);
+    const keluarga = data.filter(k => String(k.nip) === String(nip));
+    return { success: true, keluarga };
+  } catch (err) {
+    console.error("GET KELUARGA ERROR:", err);
     return { success: false };
   }
 });
