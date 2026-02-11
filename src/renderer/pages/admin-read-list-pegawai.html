@@ -22,64 +22,37 @@
   </header>
 
     <main class="content4">
-    <input type="text" class="search-box" placeholder="Cari disini....">
 
-    <table>
-      <thead>
-        <tr>
-          <th>No</th>
-          <th>Nama</th>
-          <th>Golongan</th>
-          <th>TMT Gol</th>
-          <th>Jabatan</th>
-          <th>TMT Jab</th>
-          <th>Jenis Kelamin</th>
-          <th>Aksi</th>
-        </tr>
-      </thead>
+      <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Cari disini....">
+      </div>
 
-      <tbody>
-        <tr>
-          <td>1</td>
-          <td>Warman Firman Syah, S.Si<br><small>198010291991021001</small></td>
-          <td>Kendari<br>20-10-1980</td>
-          <td>IV/b</td>
-          <td>15 Februari 2026</td>
-          <td>Sekretaris Dinas</td>
-          <td>15 Februari 2026</td>
-          <td>18 Tahun 7 Bulan</td>
-          <td>Diklat Pim Tingkat III</td>
-          <td>S-2 Manajemen</td>
-          <td>43</td>
-          <td>P</td>
+    <div class="table-container">
+      <table id="pegawaiTable">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Nama & NIP</th>
+            <th>TTL</th>
+            <th>Gol.</th>
+            <th>TMT Gol.</th>
+            <th>Jabatan</th>
+            <th>TMT Jab.</th>
+            <th>Masa Kerja</th>
+            <th>Diklat Penjenjangan</th>
+            <th>Ijazah Terakhir</th>
+            <th>Usia</th>
+            <th>Jenis Kelamin</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Data from JSON will appear here -->
+          </tbody>
+          </table>
+        </div>
+    </main>
 
-          <!-- IKON > -->
-          <td class="aksi">
-            <a href="admin-read-data-keluarga-pegawai.html">></a>
-          </td>
-        </tr>
-
-        <!-- DATA LAIN (CONTOH) -->
-        <tr>
-          <td>2</td>
-          <td>Nukie Dewata Isamu, S.Kom<br><small>197505042000032007</small></td>
-          <td>Kendari<br>04-05-1975</td>
-          <td>IV/a</td>
-          <td>1 Maret 2025</td>
-          <td>Kepala Bidang</td>
-          <td>1 Maret 2025</td>
-          <td>10 Tahun 1 Bulan</td>
-          <td>Diklat Pim Tingkat IV</td>
-          <td>S-2 Manajemen</td>
-          <td>48</td>
-          <td>P</td>
-          <td class="aksi">
-            <a href="admin-read-data-keluarga-pegawai.html">></a>
-          </td>
-        </tr>
-
-      </tbody>
-    </table>
+    <script src="../js/list-pegawai.js"></script>
   </div>
 
 </body>

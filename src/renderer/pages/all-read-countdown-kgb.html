@@ -22,20 +22,38 @@
   </header>
 
     <main class="content4">
-      
-    <!-- IMPORTANT PART -->
-    <form id="pegawaiForm">
-        <div class="form-grid">
-        <th>No</th>
-          <th>Nama</th>
-          <th>Golongan</th>
-          <th>TMT Gol</th>
-          <th>Jabatan</th>
-          <th>TMT Jab</th>
-          <th>Jenis Kelamin</th>
-          <th>Aksi</th>
+
+        <h2 class="title">COUNTDOWN KENAIKAN GAJI BULANAN</h2>
+
+        <!-- Search -->
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Cari disini....">
         </div>
-    </form>
+
+        <!-- Table -->
+        <div class="table-container">
+            <table id="pegawaiTable">
+            <thead>
+                <tr>
+                <th>No</th>
+                <th>Nama</th>
+                <th>Golongan</th>
+                <th>TMT</th>
+                <th>Jabatan</th>
+                <th>Jenis Kelamin</th>
+                <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data from JSON will appear here -->
+            </tbody>
+            </table>
+        </div>
+
+        </main>
+
+        <script src="../js/pegawai.js"></script>
+
   </div>
 </body>
 </html>
