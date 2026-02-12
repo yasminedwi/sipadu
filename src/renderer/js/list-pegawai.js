@@ -134,4 +134,33 @@ document.addEventListener("DOMContentLoaded", function () {
 
     renderTable(filtered);
   });
+
+  const XLSX = require("xlsx");
+
+  // ATAU pakai ipcRenderer kalau tidak pakai remote
+
+  window.generateExcel = async function () {
+
+      const table = document.getElementById("pegawaiTable");
+
+      if (!table) {
+          alert("Tabel tidak ditemukan!");
+          return;
+      }
+
+      const worksheet = XLSX.utils.table_to_sheet(table);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Daftar Pegawai");
+
+      const buffer = XLSX.write(workbook, {
+          type: "buffer",
+          bookType: "xlsx"
+      });
+
+      const savePath = path.join(__dirname, "../../DAFTAR_DUK.xlsx");
+
+      fs.writeFileSync(savePath, buffer);
+
+      alert("File berhasil dibuat di folder project!");
+  };
 });

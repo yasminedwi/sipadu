@@ -14,21 +14,5 @@
     "ijazah": "a",
     "password": "$2b$10$QEavaqz3bifNV8/gO8fCC.za3.zsW1KLktzwI7wxdMGOukOow3Nxm",
     "role": "admin"
-  },
-  {
-    "nama": "q",
-    "nip": "111",
-    "tempat_lahir": "1",
-    "tanggal_lahir": "2222-02-22",
-    "golongan": "I/a",
-    "tmt_golongan": "2222-02-22",
-    "jabatan": "q",
-    "tmt_jabatan": "2222-02-22",
-    "jenis_kelamin": "Perempuan",
-    "masa_kerja": "2222-02-22",
-    "diklat": "q",
-    "ijazah": "q",
-    "password": "$2b$10$zqMYoqvegKrpmY61LPAQ.uKIrf3eibGfpcTGJmKnWWsZSiVQyC5MG",
-    "role": "pegawai"
   }
 ]
