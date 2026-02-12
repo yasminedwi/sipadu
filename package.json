@@ -5,22 +5,31 @@
   "main": "src/main.js",
   "scripts": {
     "start": "electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "electron-builder",
+    "dist": "electron-builder --win"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/yasminedwi/sipadu.git"
+  "build": {
+    "appId": "com.sipadu.app",
+    "productName": "SIPADU",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "src/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/yasminedwi/sipadu/issues"
-  },
-  "homepage": "https://github.com/yasminedwi/sipadu#readme",
   "devDependencies": {
-    "electron": "^40.2.1"
+    "electron": "^40.2.1",
+    "electron-builder": "^24.0.0"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3"
