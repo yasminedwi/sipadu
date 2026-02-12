@@ -12,21 +12,26 @@ const keluargaFile = path.join(__dirname, "data", "keluarga.json");
    CREATE WINDOW
 ========================= */
 function createWindow() {
-  const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+const { width, height } = screen.getPrimaryDisplay().workAreaSize;
 
-  const win = new BrowserWindow({
-    width,
-    height,
-    resizable: false,
-    maximizable: false,
-    webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false
-    }
-  });
+const win = new BrowserWindow({
+width,
+height,
+resizable: false,
+maximizable: false,
+title: "SIPADU",
+webPreferences: {
+nodeIntegration: true,
+contextIsolation: false
+}
+});
 
-  win.setMenuBarVisibility(false);
-  win.loadFile(path.join(__dirname, "renderer", "pages", "index.html"));
+win.setMenuBarVisibility(false);
+win.loadFile(path.join(__dirname, "renderer", "pages", "index.html"));
+
+win.webContents.on("did-finish-load", () => {
+win.setTitle("SIPADU");
+});
 }
 
 app.whenReady().then(createWindow);
