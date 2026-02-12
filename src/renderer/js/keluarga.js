@@ -1,9 +1,20 @@
 const tableBody = document.querySelector("#pegawaiTable tbody");
 
-function renderTable(data) {
+function formatDate(dateStr) {
+  if (!dateStr) return "-";
+  const d = new Date(dateStr);
+  if (isNaN(d)) return dateStr; // fallback if invalid
+  return d.toLocaleDateString("id-ID", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric"
+  });
+}
+
+function renderTable(pegawaiList, keluargaList) {
   tableBody.innerHTML = "";
 
-  data.forEach((pegawai, index) => {
+pegawaiList.forEach((pegawai, index) => {
     const row = document.createElement("tr");
     row.innerHTML = `
       <td>${index + 1}</td>
@@ -27,12 +38,14 @@ function renderTable(data) {
     const familyCell = document.createElement("td");
     familyCell.colSpan = 7;
 
-    if (pegawai.keluarga && pegawai.keluarga.length > 0) {
+    const keluargaPegawai = keluargaList.filter(k => k.nip === pegawai.nip);
+
+    if (keluargaPegawai.length > 0) {
       const familyTable = document.createElement("table");
       familyTable.innerHTML = `
         <thead>...</thead>
         <tbody>
-          ${pegawai.keluarga.map((k,i)=>`
+        ${keluargaPegawai.map((k,i)=>`
             <tr>
               <td>${i+1}</td>
               <td>${k.role}</td>
@@ -56,10 +69,24 @@ function renderTable(data) {
 }
 
 // 👇 LOAD JSON HERE
-fetch("keluarga.json")
-  .then(res => res.json())
-  .then(data => renderTable(data))
-  .catch(err => console.error("JSON error:", err));
+const fs = require("fs");
+const path = require("path");
+
+const pegawaiPath = path.join(__dirname, "../../data/pegawai.json");
+const keluargaPath = path.join(__dirname, "../../data/keluarga.json");
+
+fs.readFile(pegawaiPath, "utf-8", (err, pegawaiRaw) => {
+  if (err) return console.error("Failed to load pegawai.json", err);
+  const pegawaiData = JSON.parse(pegawaiRaw);
+
+  fs.readFile(keluargaPath, "utf-8", (err2, keluargaRaw) => {
+    if (err2) return console.error("Failed to load keluarga.json", err2);
+    const keluargaData = JSON.parse(keluargaRaw);
+
+    renderTable(pegawaiData, keluargaData); // 👈 pass both
+  });
+});
+
 
 // Toggle handler
 tableBody.addEventListener("click", function (e) {
