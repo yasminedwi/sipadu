@@ -272,6 +272,41 @@ nav button.nav-btn1.active {
   box-shadow: 7px -6px 13px rgba(0,0,0,.25);
 }
 
+.admin-content1 {
+  background: #efdbd5;
+  padding: 260px;
+  border-radius: 36px 36px 0 0;
+  position: relative;
+  top: 4px;
+  min-height: 88vh;
+  z-index: 6;
+  box-shadow: 7px -6px 13px rgba(0,0,0,.25);
+}
+
+.admin-content2 {
+  background: #e6e6d8;
+  padding: 260px;
+  border-radius: 36px 36px 0 0;
+  position: absolute;
+  top: 101px;
+  width: 100%;
+  min-height: calc(100vh - 140px);
+  z-index: 4;
+  box-shadow: 7px -6px 13px rgba(0,0,0,.25);
+}
+
+.admin-content3 {
+  background: #d7dde7;
+  padding: 120px 60px 80px;
+  border-radius: 36px 36px 0 0;
+  position: absolute;
+  top: 90px;
+  width: 100%;
+  min-height: auto;
+  z-index: 2;
+  box-shadow: 7px -6px 13px rgba(0,0,0,.25);
+}
+
 .content4 {
   background: white;
   padding: 80px 60px;

@@ -46,10 +46,20 @@
     </nav>
   </header>
 
-  <!-- CONTENT LAYERS -->
-  <div class="content1"></div>
-  <div class="content2"></div>
-  <div class="content3"></div>
+  <!-- USER CONTENT -->
+  <div id="userContent">
+      <div class="content1" style="top: 22px;"></div>
+      <div class="content2"></div>
+      <div class="content3"></div>
+  </div>
+
+  <!-- ADMIN CONTENT -->
+  <div id="adminContent" style="display:none;">
+      <div class="content1 admin-content1"></div>
+      <div class="content2 admin-content2"></div>
+      <div class="content3 admin-content3"></div>
+  </div>
+
   
   <main class="content">
     <div class="cards">
@@ -86,6 +96,18 @@
     } else {
       topBar.classList.add("admin-top-bar");
     }
+
+    const userContent = document.getElementById("userContent");
+    const adminContent = document.getElementById("adminContent");
+
+    if (loginUser.role === "admin") {
+        userContent.style.display = "none";
+        adminContent.style.display = "block";
+    } else {
+        adminContent.style.display = "none";
+        userContent.style.display = "block";
+    }
+
   </script>
 
 </body>
