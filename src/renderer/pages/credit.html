@@ -195,9 +195,12 @@
         </div>
         <div class="contact-item">
             <span>GitHub</span>
-            <span>https://github.com/yasminedwi/sipadu</span>
+            <a href="javascript:void(0)" 
+                onclick="openExternalLink('https://github.com/yasminedwi/sipadu')" 
+                title="Buka Repository GitHub">
+                github.com/yasminedwi/sipadu
+            </a>
         </div>
-    </div>
 
     <button class="btn-back" onclick="window.history.back()">KEMBALI KE DASHBOARD</button>
 
@@ -206,5 +209,7 @@
     </div>
   </main>
 
+  <script> const { shell } = require('electron'); function openExternalLink(url) { shell.openExternal(url); } </script>
+  
 </body>
 </html>
