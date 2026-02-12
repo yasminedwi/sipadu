@@ -76,27 +76,35 @@
     </form>
   </div>
 
-<script>
-  const { ipcRenderer } = require("electron");
+  <script>
+    const { ipcRenderer } = require("electron");
 
-  document.getElementById("pegawaiForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
+    // Ambil NIP pegawai dari URL
+    const params = new URLSearchParams(window.location.search);
+    const nipPegawai = params.get("nip");
 
-    const formData = Object.fromEntries(new FormData(e.target).entries());
-
-    // Pastikan kamu mengirimkan NIP pegawai sebagai referensi
-    formData.nip = "MASUKKAN_NIP_PEGAWAI_DISINI"; // ganti sesuai pegawai yg bersangkutan
-
-    const result = await ipcRenderer.invoke("save-keluarga", formData);
-
-    if (result.success) {
-      alert("Data keluarga berhasil disimpan!");
-      e.target.reset();
-    } else {
-      alert("Gagal menyimpan data keluarga: " + result.message);
+    if (!nipPegawai) {
+      alert("NIP pegawai tidak ditemukan! Buka halaman ini dari daftar pegawai.");
     }
-  });
-</script>
+
+    document.getElementById("pegawaiForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const formData = Object.fromEntries(new FormData(e.target).entries());
+
+      // ✅ Gunakan NIP dari URL, bukan placeholder
+      formData.nip = nipPegawai;
+
+      const result = await ipcRenderer.invoke("save-keluarga", formData);
+
+      if (result.success) {
+        alert("Data keluarga berhasil disimpan!");
+        e.target.reset();
+      } else {
+        alert("Gagal menyimpan data keluarga: " + result.message);
+      }
+    });
+  </script>
 
 </body>
 </html>

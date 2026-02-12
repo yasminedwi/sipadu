@@ -550,3 +550,25 @@ select {
   margin-top: 25px;
   flex-wrap: wrap;
 }
+
+td:nth-child(7) button,
+#pegawaiTable td:nth-child(13) button {
+  white-space: nowrap;
+  min-width: 90px;
+  width: auto;
+  text-align: center;
+}
+
+.btn-done {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: none;
+  background: #4caf50;
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-done:hover {
+  background: #3c9b45;
+}
