@@ -26,6 +26,13 @@
         <input type="text" id="searchInput" placeholder="Cari disini....">
       </div>
 
+      <!-- tombol generate DUK -->
+      <div style="margin:15px 0;">
+        <button onclick="generateExcel()" class="btn-primary">
+          GENERATE DUK
+        </button>
+      </div>
+
     <div class="table-container">
       <table id="pegawaiTable">
         <thead>
@@ -49,16 +56,11 @@
           </tbody>
           </table>
         </div>
-        </div>
-        <div class="top-action">
-            <button class="btn-urungkan"
-                onclick="window.location.href='all-read-dashboard.html'">
-                URUNGKAN
-            </button>
-        </div>
+        
     </main>
 
     <script src="../js/list-pegawai.js"></script>
+    <script src="../js/generate-duk.js"></script>
   </div>
 
 </body>
