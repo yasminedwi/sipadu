@@ -13,7 +13,7 @@
     "diklat": "Diklat PIM Tingkat IV Tahun 2009",
     "ijazah": "S-2 Manajemen SDM",
     "password": "$2b$10$QEavaqz3bifNV8/gO8fCC.za3.zsW1KLktzwI7wxdMGOukOow3Nxm",
-    "role": "admin",
+    "role": "admin"
   },
   {
     "nama": "Baharuddin, SE. M.Si.",
@@ -29,7 +29,7 @@
     "diklat": "Diklat PIM Tingkat IV",
     "ijazah": "S-2 Administrasi Pembangunan",
     "password": "$2b$10$LfOMGwyH3.e.awh1PW55qOVOOn0nhj026T/gr0dCsEPY6e9rB.32a",
-    "role": "pegawai",
+    "role": "pegawai"
   },
   {
     "nama": "Irnayanti Bisma, S.Si., M.Si.",
@@ -45,7 +45,7 @@
     "diklat": "Diklat PIM Tingkat III",
     "ijazah": "S-2",
     "password": "$2b$10$jOOUy9JSNNKCpwdzABW.cuNZSALCsksskK7QZazoCVnRzSl0KepVi",
-    "role": "pegawai",
+    "role": "pegawai"
   },
   {
     "nama": "a",
@@ -61,6 +61,6 @@
     "diklat": "1",
     "ijazah": "1",
     "password": "$2b$10$RPF6GMPGR8nVc.0X3U.8EuYsslCDNppq74u2W1AhTc.fjoyr5cDrG",
-    "role": "pegawai",
+    "role": "pegawai"
   }
 ]
