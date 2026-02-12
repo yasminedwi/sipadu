@@ -238,13 +238,3 @@ ipcMain.handle("update-family-member", async (event, formData) => {
     return { success: false, message: err.message };
   }
 });
-
-document.querySelector(".btn-urungkan").addEventListener("click", () => {
-  const params = new URLSearchParams(window.location.search);
-  const nipPegawai = params.get("nip");
-  if (!nipPegawai) {
-    alert("NIP pegawai tidak ditemukan!");
-    return;
-  }
-  window.location.href = `admin-read-data-keluarga-pegawai.html?nip=${nipPegawai}`;
-});

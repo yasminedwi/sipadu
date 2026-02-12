@@ -12,7 +12,6 @@ body {
   min-height: 100vh;
   background-image: url('images/index.png');
   background-repeat: repeat;
-  background-size: cover;
   background-position: top;
 }
 
@@ -225,12 +224,15 @@ nav button.nav-btn1.active {
    CONTENT LAYERS
    ====================== */
 .content {
-  background: white;
+  background: url('images/Admin.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
   padding: 260px;
   border-radius: 36px 36px 0 0;
   position: absolute;
   width: 100%;
-  top: 123px;
+  top: 121px;
   min-height: 88vh;
   z-index: 6;
 }
