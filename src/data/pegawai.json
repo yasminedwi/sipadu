@@ -14,7 +14,6 @@
     "ijazah": "S-2 Manajemen SDM",
     "password": "$2b$10$QEavaqz3bifNV8/gO8fCC.za3.zsW1KLktzwI7wxdMGOukOow3Nxm",
     "role": "admin",
-    "foto": "111.png"
   },
   {
     "nama": "Baharuddin, SE. M.Si.",
@@ -31,7 +30,6 @@
     "ijazah": "S-2 Administrasi Pembangunan",
     "password": "$2b$10$LfOMGwyH3.e.awh1PW55qOVOOn0nhj026T/gr0dCsEPY6e9rB.32a",
     "role": "pegawai",
-    "foto": "197207271994021002.jpg"
   },
   {
     "nama": "Irnayanti Bisma, S.Si., M.Si.",
@@ -48,7 +46,6 @@
     "ijazah": "S-2",
     "password": "$2b$10$jOOUy9JSNNKCpwdzABW.cuNZSALCsksskK7QZazoCVnRzSl0KepVi",
     "role": "pegawai",
-    "foto": "197805162002122003.jpg"
   },
   {
     "nama": "a",
@@ -65,6 +62,5 @@
     "ijazah": "1",
     "password": "$2b$10$RPF6GMPGR8nVc.0X3U.8EuYsslCDNppq74u2W1AhTc.fjoyr5cDrG",
     "role": "pegawai",
-    "foto": null
   }
 ]

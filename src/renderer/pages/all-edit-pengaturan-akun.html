@@ -52,14 +52,6 @@
     
 <main class="content">
     <div class="akun-wrapper">
-        <div class="akun-left">
-            <p>Foto Profil</p>
-            <div class="foto-profil">
-                <img id="previewFoto" width="120" height="120" style="object-fit: cover;">
-                <input type="file" id="profilePic" accept="image/*">
-            </div>
-        </div>
-
         <div class="akun-divider"></div>
 
         <div class="akun-right">
@@ -100,7 +92,6 @@
     const adminArea = document.getElementById("adminArea");
     const topBar = document.getElementById("topBar");
     const previewFoto = document.getElementById("previewFoto");
-    const fileInput = document.getElementById("profilePic");
 
     if (loginUser.role !== "admin") {
         adminArea.style.display = "none";

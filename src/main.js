@@ -7,7 +7,6 @@ const bcrypt = require("bcryptjs");
 // Paths
 const pegawaiFile = path.join(__dirname, "data", "pegawai.json");
 const keluargaFile = path.join(__dirname, "data", "keluarga.json");
-const profilePicsDir = path.join(__dirname, "data", "profile_pics");
 
 /* =========================
    CREATE WINDOW
@@ -43,8 +42,6 @@ function readJSON(filePath) {
 function writeJSON(filePath, data) {
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
 }
-
-if (!fs.existsSync(profilePicsDir)) fs.mkdirSync(profilePicsDir, { recursive: true });
 
 /* =========================
    PEGAWAI CRUD
@@ -118,13 +115,11 @@ ipcMain.handle("update-user", async (event, dataInput) => {
     // Handle photo
     if (dataInput.fileBuffer && dataInput.fileName) {
       if (user.foto) {
-        const oldPhoto = path.join(profilePicsDir, user.foto);
         if (fs.existsSync(oldPhoto)) fs.unlinkSync(oldPhoto);
       }
 
       const ext = path.extname(dataInput.fileName);
       const newFileName = dataInput.nip + "_" + Date.now() + ext;
-      fs.writeFileSync(path.join(profilePicsDir, newFileName), Buffer.from(dataInput.fileBuffer));
       user.foto = newFileName;
     }
 
@@ -144,7 +139,6 @@ ipcMain.handle("delete-user", async (event, nip) => {
 
     const user = data[index];
     if (user.foto) {
-      const photoPath = path.join(profilePicsDir, user.foto);
       if (fs.existsSync(photoPath)) fs.unlinkSync(photoPath);
     }
 
