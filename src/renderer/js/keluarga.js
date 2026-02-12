@@ -1,8 +1,9 @@
+const tableBody = document.querySelector("#pegawaiTable tbody");
+
 function renderTable(data) {
   tableBody.innerHTML = "";
 
   data.forEach((pegawai, index) => {
-    // Main employee row
     const row = document.createElement("tr");
     row.innerHTML = `
       <td>${index + 1}</td>
@@ -19,7 +20,6 @@ function renderTable(data) {
     `;
     tableBody.appendChild(row);
 
-    // Hidden family row
     const familyRow = document.createElement("tr");
     familyRow.classList.add("family-row");
     familyRow.style.display = "none";
@@ -29,36 +29,20 @@ function renderTable(data) {
 
     if (pegawai.keluarga && pegawai.keluarga.length > 0) {
       const familyTable = document.createElement("table");
-      familyTable.style.width = "100%";
-      familyTable.style.borderCollapse = "collapse";
       familyTable.innerHTML = `
-        <thead>
-          <tr>
-            <th>No</th>
-            <th>Status</th>
-            <th>Nama</th>
-            <th>Tanggal Lahir</th>
-            <th>Jenis Kelamin</th>
-            <th>Pekerjaan</th>
-            <th>Status Tanggungan</th>
-          </tr>
-        </thead>
+        <thead>...</thead>
         <tbody>
-          ${pegawai.keluarga
-            .map(
-              (k, i) => `
-              <tr>
-                <td>${i + 1}</td>
-                <td>${k.role}</td>
-                <td>${k.nama}</td>
-                <td>${k.tanggal_lahir}</td>
-                <td>${k.jenis_kelamin}</td>
-                <td>${k.pekerjaan}</td>
-                <td>${k.tanggungan}</td>
-              </tr>
-            `
-            )
-            .join("")}
+          ${pegawai.keluarga.map((k,i)=>`
+            <tr>
+              <td>${i+1}</td>
+              <td>${k.role}</td>
+              <td>${k.nama}</td>
+              <td>${k.tanggal_lahir}</td>
+              <td>${k.jenis_kelamin}</td>
+              <td>${k.pekerjaan}</td>
+              <td>${k.tanggungan}</td>
+            </tr>
+          `).join("")}
         </tbody>
       `;
       familyCell.appendChild(familyTable);
@@ -71,13 +55,22 @@ function renderTable(data) {
   });
 }
 
-// Event delegation for slide-down
+// 👇 LOAD JSON HERE
+fetch("keluarga.json")
+  .then(res => res.json())
+  .then(data => renderTable(data))
+  .catch(err => console.error("JSON error:", err));
+
+// Toggle handler
 tableBody.addEventListener("click", function (e) {
-  if (e.target.classList.contains("btn-show-family")) {
-    const tr = e.target.closest("tr");
-    const nextTr = tr.nextElementSibling;
-    if (nextTr && nextTr.classList.contains("family-row")) {
-      nextTr.style.display = nextTr.style.display === "none" ? "table-row" : "none";
-    }
+  const btn = e.target.closest(".btn-show-family");
+  if (!btn) return;
+
+  const tr = btn.closest("tr");
+  const nextTr = tr.nextElementSibling;
+
+  if (nextTr && nextTr.classList.contains("family-row")) {
+    nextTr.style.display =
+      nextTr.style.display === "none" ? "table-row" : "none";
   }
 });
