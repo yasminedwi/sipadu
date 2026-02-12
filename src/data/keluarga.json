@@ -1,22 +1,12 @@
 [
   {
     "role": "suami",
-    "nama": "q",
+    "nama": "w",
     "tanggal_lahir": "2222-02-22",
     "jenis_kelamin": "Laki-laki",
     "pekerjaan": "q",
     "tanggungan": "ditanggung",
     "nip": "a",
     "id": 1770837180042
-  },
-  {
-    "role": "anak1",
-    "nama": "meri",
-    "tanggal_lahir": "2005-08-17",
-    "jenis_kelamin": "Perempuan",
-    "pekerjaan": "Mahasiswa",
-    "tanggungan": "ditanggung",
-    "nip": "MASUKKAN_NIP_PEGAWAI_DISINI",
-    "id": 1770860755193
   }
 ]

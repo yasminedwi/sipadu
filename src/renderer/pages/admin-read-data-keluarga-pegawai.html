@@ -39,7 +39,7 @@
   </header>
 
   <main class="content4">
-    <button onclick="window.location.href='admin-add-data-keluarga-pegawai.html'" class="btn-simpan">Tambah Anggota Keluarga</button>
+    <button class="btn-simpan" id="btnTambahKeluarga">Tambah Anggota Keluarga</button>
 
     <table id="keluargaTable">
       <thead>
@@ -64,32 +64,40 @@
     const { ipcRenderer } = require("electron");
 
     document.addEventListener("DOMContentLoaded", async () => {
-      // ambil ID pegawai dari query string
       const params = new URLSearchParams(window.location.search);
-      const pegawaiId = params.get("id");
+      const pegawaiNip = params.get("nip");
 
-      if (!pegawaiId) return;
+      const btnTambah = document.getElementById("btnTambahKeluarga");
+      btnTambah.onclick = () => {
+        if (!pegawaiNip) {
+          alert("NIP pegawai tidak ditemukan. Buka halaman dari daftar pegawai.");
+          return;
+        }
+        window.location.href = `admin-add-data-keluarga-pegawai.html?nip=${pegawaiNip}`;
+      };
 
-      // ambil semua anggota keluarga dari backend
-      const result = await ipcRenderer.invoke("get-family-array", pegawaiId);
+      if (!pegawaiNip) return;
 
-      if (result.success && Array.isArray(result.members)) {
+      // ambil semua anggota keluarga
+      const result = await ipcRenderer.invoke("get-keluarga", pegawaiNip);
+
+      if (result.success && Array.isArray(result.keluarga)) {
         const tbody = document.getElementById("keluargaTable").querySelector("tbody");
-        tbody.innerHTML = ""; // kosongkan dulu
+        tbody.innerHTML = "";
 
-        result.members.forEach((member, index) => {
+        result.keluarga.forEach((member, index) => {
           const tr = document.createElement("tr");
 
           tr.innerHTML = `
             <td>${index + 1}</td>
-            <td>${member.status_anggota || "-"}</td>
+            <td>${member.role || "-"}</td>
             <td>${member.nama || "-"}</td>
             <td>${member.tanggal_lahir || "-"}</td>
             <td>${member.jenis_kelamin || "-"}</td>
             <td>${member.pekerjaan || "-"}</td>
             <td>${member.tanggungan || "-"}</td>
             <td>
-              <button class="btn-edit" onclick="editMember('${member.id}')">Edit</button>
+              <button class="btn-edit" onclick="editMember('${member.id}')">Edit</button><br>
               <button class="btn-delete" onclick="deleteMember('${member.id}')">Hapus</button>
             </td>
           `;
@@ -98,8 +106,15 @@
       }
     });
 
+    // 🔹 move functions outside DOMContentLoaded
     function editMember(id) {
-      window.location.href = `admin-edit-family.html?id=${id}`;
+      const params = new URLSearchParams(window.location.search);
+      const nipPegawai = params.get("nip"); // get current employee NIP
+      if (!nipPegawai) {
+        alert("NIP pegawai tidak ditemukan!");
+        return;
+      }
+      window.location.href = `admin-edit-data-keluarga-pegawai.html?id=${id}&nip=${nipPegawai}`;
     }
 
     async function deleteMember(id) {

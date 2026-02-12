@@ -5,55 +5,205 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Data Keluarga Pegawai</title>
   <link rel="stylesheet" href="../css/style.css">
+  <style>
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background-color: #f4f4f4; }
+    .btn-show-family { padding: 5px 10px; cursor: pointer; }
+    .family-row td { background-color: #fafafa; }
+    .table-container { overflow-x: auto; }
+    .search-container { margin-bottom: 10px; }
+  </style>
 </head>
 
 <body class="dashboard-page1">
-
   <header class="top-bar2" id="topbar">
     <a href="all-read-dashboard.html">
-        <img src="../css/images/logo-dpmptsp-v-footer.png"
-            class="logo-mini"
-            alt="Logo DPMPTSP">
+      <img src="../css/images/logo-dpmptsp-v-footer.png" class="logo-mini" alt="Logo DPMPTSP">
     </a>
-    <img src="../css/images/Lambang_Kota_Kendari.png"
-         class="logo-kota" alt="Logo Kota Kendari">
-
+    <img src="../css/images/Lambang_Kota_Kendari.png" class="logo-kota" alt="Logo Kota Kendari">
     <h2>DATA KELUARGA PEGAWAI</h2>
   </header>
 
-    <main class="content4">
+  <main class="content4">
+    <h2 class="title">DATA KELUARGA PEGAWAI</h2>
 
-        <h2 class="title">DATA KELUARGA PEGAWAI</h2>
+    <div class="search-container">
+      <input type="text" id="searchInput" placeholder="Cari disini...">
+    </div>
 
-        <!-- Search -->
-        <div class="search-container">
-            <input type="text" id="searchInput" placeholder="Cari disini....">
-        </div>
+    <div class="table-container">
+      <table id="pegawaiTable">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Nama</th>
+            <th>Golongan</th>
+            <th>TMT</th>
+            <th>Jabatan</th>
+            <th>Jenis Kelamin</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </main>
 
-        <!-- Table -->
-        <div class="table-container">
-            <table id="pegawaiTable">
-            <thead>
-                <tr>
-                <th>No</th>
-                <th>Nama</th>
-                <th>Golongan</th>
-                <th>TMT</th>
-                <th>Jabatan</th>
-                <th>Jenis Kelamin</th>
-                <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Data from JSON will appear here -->
-            </tbody>
-            </table>
-        </div>
+<script src="../js/keluarga.js">
+    const { ipcRenderer } = require("electron");
+    const path = require("path");
+    const fs = require("fs");
 
-        </main>
+    document.addEventListener("DOMContentLoaded", function () {
+      const tableBody = document.querySelector("#pegawaiTable tbody");
+      const searchInput = document.getElementById("searchInput");
 
-        <script src="../js/keluarga.js"></script>
+      // File paths
+      const pegawaiFilePath = path.join(__dirname, "../../data/pegawai.json");
+      const keluargaFilePath = path.join(__dirname, "../../data/keluarga.json");
 
-  </div>
+      // Read pegawai data
+      let pegawaiData = [];
+      if (fs.existsSync(pegawaiFilePath)) {
+        const rawPegawai = fs.readFileSync(pegawaiFilePath);
+        pegawaiData = JSON.parse(rawPegawai);
+      }
+
+      // Read keluarga data
+      let keluargaData = [];
+      if (fs.existsSync(keluargaFilePath)) {
+        const rawKeluarga = fs.readFileSync(keluargaFilePath);
+        keluargaData = JSON.parse(rawKeluarga);
+      }
+
+      const today = new Date();
+
+      // Assign keluarga and calculate next TMT
+      pegawaiData.forEach(p => {
+        if (p.tmt_golongan) {
+          const [year, month, day] = p.tmt_golongan.split("-").map(Number);
+          let tmtDate = new Date(year, month - 1, day);
+          let diffYears = today.getFullYear() - tmtDate.getFullYear();
+          if (
+            today.getMonth() > tmtDate.getMonth() ||
+            (today.getMonth() === tmtDate.getMonth() && today.getDate() > tmtDate.getDate())
+          ) {
+            diffYears += 1;
+          }
+          const jumps = Math.ceil(diffYears / 2);
+          tmtDate.setFullYear(tmtDate.getFullYear() + jumps * 2);
+          p.next_tmt = tmtDate;
+        } else {
+          p.next_tmt = null;
+        }
+
+        p.keluarga = keluargaData.filter(k => k.nip === p.nip);
+      });
+
+      // Sort by next TMT
+      pegawaiData.sort((a, b) => {
+        if (!a.next_tmt) return 1;
+        if (!b.next_tmt) return -1;
+        return a.next_tmt - b.next_tmt;
+      });
+
+      // Format date
+      function formatDate(date) {
+        if (!date) return "-";
+        const y = date.getFullYear();
+        const m = String(date.getMonth() + 1).padStart(2, "0");
+        const d = String(date.getDate()).padStart(2, "0");
+        return `${y}-${m}-${d}`;
+      }
+
+      // Render table
+      function renderTable(data) {
+        tableBody.innerHTML = "";
+        data.forEach((pegawai, index) => {
+          // Employee row
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${pegawai.nama || "-"}</td>
+            <td>${pegawai.golongan || "-"}</td>
+            <td>${formatDate(pegawai.next_tmt)}</td>
+            <td>${pegawai.jabatan || "-"}</td>
+            <td>${pegawai.jenis_kelamin || "-"}</td>
+            <td><button class="btn-show-family" data-nip="${pegawai.nip}">Tampilkan Keluarga</button></td>
+          `;
+          tableBody.appendChild(row);
+
+          // Hidden family row
+          const familyRow = document.createElement("tr");
+          familyRow.classList.add("family-row");
+          familyRow.style.display = "none";
+
+          const familyCell = document.createElement("td");
+          familyCell.colSpan = 7;
+
+          if (pegawai.keluarga.length > 0) {
+            let html = `<table style="width:100%; border-collapse: collapse;">
+                          <thead>
+                            <tr>
+                              <th>No</th>
+                              <th>Status</th>
+                              <th>Nama</th>
+                              <th>Tanggal Lahir</th>
+                              <th>Jenis Kelamin</th>
+                              <th>Pekerjaan</th>
+                              <th>Status Tanggungan</th>
+                            </tr>
+                          </thead>
+                          <tbody>`;
+            pegawai.keluarga.forEach((k, i) => {
+              html += `<tr>
+                <td>${i + 1}</td>
+                <td>${k.role || "-"}</td>
+                <td>${k.nama || "-"}</td>
+                <td>${k.tanggal_lahir || "-"}</td>
+                <td>${k.jenis_kelamin || "-"}</td>
+                <td>${k.pekerjaan || "-"}</td>
+                <td>${k.tanggungan || "-"}</td>
+              </tr>`;
+            });
+            html += `</tbody></table>`;
+            familyCell.innerHTML = html;
+          } else {
+            familyCell.innerHTML = "<em>Tidak ada anggota keluarga</em>";
+          }
+
+          familyRow.appendChild(familyCell);
+          tableBody.appendChild(familyRow);
+        });
+      }
+
+      renderTable(pegawaiData);
+
+      // Toggle family rows
+      tableBody.addEventListener("click", e => {
+        if (e.target.classList.contains("btn-show-family")) {
+          const tr = e.target.closest("tr");
+          const nextTr = tr.nextElementSibling;
+          if (nextTr && nextTr.classList.contains("family-row")) {
+            nextTr.style.display = nextTr.style.display === "none" ? "table-row" : "none";
+          }
+        }
+      });
+
+      // Search filter
+      searchInput.addEventListener("keyup", function () {
+        const keyword = this.value.toLowerCase();
+        const filtered = pegawaiData.filter(p =>
+          p.nama.toLowerCase().includes(keyword) ||
+          (p.golongan && p.golongan.toLowerCase().includes(keyword)) ||
+          (p.jabatan && p.jabatan.toLowerCase().includes(keyword))
+        );
+        renderTable(filtered);
+      });
+    });
+    
+  </script>
 </body>
 </html>
+    

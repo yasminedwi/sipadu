@@ -1,138 +1,103 @@
-document.addEventListener("DOMContentLoaded", function () {
-  const tableBody = document.querySelector("#pegawaiTable tbody");
-  const searchInput = document.getElementById("searchInput");
+const tableBody = document.querySelector("#pegawaiTable tbody");
 
-  const path = require("path");
-  const fs = require("fs");
-
-  // File paths
-  const pegawaiFilePath = path.join(__dirname, "../../data/pegawai.json");
-  const keluargaFilePath = path.join(__dirname, "../../data/keluarga.json");
-
-  // Baca data pegawai
-  const rawPegawai = fs.readFileSync(pegawaiFilePath);
-  let pegawaiData = JSON.parse(rawPegawai);
-
-  // Baca data keluarga
-  let keluargaData = [];
-  if (fs.existsSync(keluargaFilePath)) {
-    const rawKeluarga = fs.readFileSync(keluargaFilePath);
-    keluargaData = JSON.parse(rawKeluarga);
-  }
-
-  const today = new Date();
-
-  // Hitung next TMT
-  pegawaiData.forEach(p => {
-    const [year, month, day] = p.tmt_golongan.split("-").map(Number);
-    let tmtDate = new Date(year, month - 1, day);
-
-    let diffYears = today.getFullYear() - tmtDate.getFullYear();
-    if (
-      today.getMonth() > tmtDate.getMonth() ||
-      (today.getMonth() === tmtDate.getMonth() && today.getDate() > tmtDate.getDate())
-    ) {
-      diffYears += 1;
-    }
-    const jumps = Math.ceil(diffYears / 2);
-    tmtDate.setFullYear(tmtDate.getFullYear() + jumps * 2);
-
-    p.next_tmt = new Date(tmtDate);
-
-    // assign keluarga berdasarkan NIP
-    p.keluarga = keluargaData.filter(k => k.nip === p.nip);
+function formatDate(dateStr) {
+  if (!dateStr) return "-";
+  const d = new Date(dateStr);
+  if (isNaN(d)) return dateStr; // fallback if invalid
+  return d.toLocaleDateString("id-ID", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric"
   });
+}
 
-  // Sort by next TMT
-  pegawaiData.sort((a, b) => a.next_tmt - b.next_tmt);
+function renderTable(pegawaiList, keluargaList) {
+  tableBody.innerHTML = "";
 
-  // Helper
-  function formatDate(date) {
-    const y = date.getFullYear();
-    const m = String(date.getMonth() + 1).padStart(2, "0");
-    const d = String(date.getDate()).padStart(2, "0");
-    return `${y}-${m}-${d}`;
-  }
+pegawaiList.forEach((pegawai, index) => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${index + 1}</td>
+      <td>${pegawai.nama}</td>
+      <td>${pegawai.golongan}</td>
+      <td>${formatDate(pegawai.next_tmt)}</td>
+      <td>${pegawai.jabatan}</td>
+      <td>${pegawai.jenis_kelamin}</td>
+      <td>
+        <button class="btn-show-family" data-nip="${pegawai.nip}">
+          Tampilkan Keluarga
+        </button>
+      </td>
+    `;
+    tableBody.appendChild(row);
 
-  function renderTable(data) {
-    tableBody.innerHTML = "";
+    const familyRow = document.createElement("tr");
+    familyRow.classList.add("family-row");
+    familyRow.style.display = "none";
 
-    data.forEach((pegawai, index) => {
-      let keluargaDropdown = "";
+    const familyCell = document.createElement("td");
+    familyCell.colSpan = 7;
 
-      if (pegawai.keluarga && pegawai.keluarga.length > 0) {
-        const options = pegawai.keluarga
-          .map(
-            (k, i) =>
-              `<option value="${i}">${k.role} - ${k.nama}</option>`
-          )
-          .join("");
+    const keluargaPegawai = keluargaList.filter(k => k.nip === pegawai.nip);
 
-        keluargaDropdown = `
-          <select class="keluarga-select" data-nip="${pegawai.nip}">
-            <option value="">-- Pilih Keluarga --</option>
-            ${options}
-          </select>
-        `;
-      } else {
-        keluargaDropdown = `
-          <select disabled>
-            <option>Tidak Ada Data</option>
-          </select>
-        `;
-      }
-
-      const row = `
-        <tr>
-          <td>${index + 1}</td>
-          <td>${pegawai.nama}</td>
-          <td>${pegawai.golongan}</td>
-          <td>${formatDate(pegawai.next_tmt)}</td>
-          <td>${pegawai.jabatan}</td>
-          <td>${pegawai.jenis_kelamin}</td>
-          <td>${keluargaDropdown}</td>
-        </tr>
+    if (keluargaPegawai.length > 0) {
+      const familyTable = document.createElement("table");
+      familyTable.innerHTML = `
+        <thead>...</thead>
+        <tbody>
+        ${keluargaPegawai.map((k,i)=>`
+            <tr>
+              <td>${i+1}</td>
+              <td>${k.role}</td>
+              <td>${k.nama}</td>
+              <td>${k.tanggal_lahir}</td>
+              <td>${k.jenis_kelamin}</td>
+              <td>${k.pekerjaan}</td>
+              <td>${k.tanggungan}</td>
+            </tr>
+          `).join("")}
+        </tbody>
       `;
-
-      tableBody.innerHTML += row;
-    });
-  }
-
-  renderTable(pegawaiData);
-
-  // Event dropdown keluarga
-  tableBody.addEventListener("change", function (e) {
-    if (e.target.classList.contains("keluarga-select")) {
-      const nip = e.target.dataset.nip;
-      const keluargaIndex = e.target.value;
-      if (keluargaIndex === "") return;
-
-      const selectedPegawai = pegawaiData.find(p => p.nip === nip);
-      if (!selectedPegawai) return;
-
-      const selectedKeluarga = selectedPegawai.keluarga[keluargaIndex];
-
-      alert(
-        `Hubungan: ${selectedKeluarga.role}\n` +
-        `Nama: ${selectedKeluarga.nama}\n` +
-        `Tanggal Lahir: ${selectedKeluarga.tanggal_lahir}\n` +
-        `Jenis Kelamin: ${selectedKeluarga.jenis_kelamin}\n` +
-        `Pekerjaan: ${selectedKeluarga.pekerjaan}\n` +
-        `Status Tanggungan: ${selectedKeluarga.tanggungan}`
-      );
+      familyCell.appendChild(familyTable);
+    } else {
+      familyCell.innerHTML = "<em>Tidak ada anggota keluarga</em>";
     }
+
+    familyRow.appendChild(familyCell);
+    tableBody.appendChild(familyRow);
   });
+}
 
-  // Search filter
-  searchInput.addEventListener("keyup", function () {
-    const keyword = this.value.toLowerCase();
+// 👇 LOAD JSON HERE
+const fs = require("fs");
+const path = require("path");
 
-    const filtered = pegawaiData.filter(p =>
-      p.nama.toLowerCase().includes(keyword) ||
-      (p.golongan && p.golongan.toLowerCase().includes(keyword)) ||
-      (p.jabatan && p.jabatan.toLowerCase().includes(keyword))
-    );
+const pegawaiPath = path.join(__dirname, "../../data/pegawai.json");
+const keluargaPath = path.join(__dirname, "../../data/keluarga.json");
 
-    renderTable(filtered);
+fs.readFile(pegawaiPath, "utf-8", (err, pegawaiRaw) => {
+  if (err) return console.error("Failed to load pegawai.json", err);
+  const pegawaiData = JSON.parse(pegawaiRaw);
+
+  fs.readFile(keluargaPath, "utf-8", (err2, keluargaRaw) => {
+    if (err2) return console.error("Failed to load keluarga.json", err2);
+    const keluargaData = JSON.parse(keluargaRaw);
+
+    renderTable(pegawaiData, keluargaData); // 👈 pass both
   });
+});
+
+
+// Toggle handler
+tableBody.addEventListener("click", function (e) {
+  const btn = e.target.closest(".btn-show-family");
+  if (!btn) return;
+
+  const tr = btn.closest("tr");
+  const nextTr = tr.nextElementSibling;
+
+  if (nextTr && nextTr.classList.contains("family-row")) {
+    nextTr.style.display =
+      nextTr.style.display === "none" ? "table-row" : "none";
+  }
 });
