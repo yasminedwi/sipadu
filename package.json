@@ -1,7 +1,7 @@
 {
-  "name": "duk-kgb-kp4-app",
+  "name": "SIPADU",
   "version": "1.0.0",
-  "description": "",
+  "description": "Aplikasi Sistem Informasi Kepegawaian Terpadu pada Dinas Penanaman Modal dan Pelayanan Terpadu Satu Pintu Kota Kendari",
   "main": "src/main.js",
   "scripts": {
     "start": "electron .",
@@ -9,16 +9,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yasminedwi/kepegawaian-ptsp.git"
+    "url": "git+https://github.com/yasminedwi/sipadu.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "bugs": {
-    "url": "https://github.com/yasminedwi/kepegawaian-ptsp/issues"
+    "url": "https://github.com/yasminedwi/sipadu/issues"
   },
-  "homepage": "https://github.com/yasminedwi/kepegawaian-ptsp#readme",
+  "homepage": "https://github.com/yasminedwi/sipadu#readme",
   "devDependencies": {
     "electron": "^40.2.1"
   },
