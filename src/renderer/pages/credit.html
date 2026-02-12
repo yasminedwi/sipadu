@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credit - SIPADU</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        :root {
+            --primary-color: #3f52e7;
+            --primary-dark: #2c3bd6;
+            --text-main: #2c3e50;
+            --text-muted: #7f8c8d;
+            --bg-body: #f4f7f6;
+            --white: #ffffff;
+        }
+
+        body.dashboard-page {
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-body);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--text-main);
+        }
+
+        .content {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            width: 90%;
+            max-width: 450px;
+            transition: transform 0.3s ease;
+        }
+
+        /* Header Styling */
+        .credit-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .credit-header h2 {
+            margin: 0;
+            font-size: 24px;
+            letter-spacing: 1px;
+            color: var(--primary-color);
+            text-transform: uppercase;
+        }
+
+        .credit-header p {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-top: 5px;
+        }
+
+        /* Section Styling */
+        .section {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .section:last-of-type {
+            border-bottom: none;
+        }
+
+        .section-title {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .app-name {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text-main);
+            margin: 0;
+        }
+
+        .app-sub {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        /* Team List */
+        ul.team-list {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Membagi dua kolom agar lebih ringkas */
+            gap: 8px;
+        }
+
+        ul.team-list li {
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+
+        ul.team-list li::before {
+            content: "•";
+            color: var(--primary-color);
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        /* Contact Info */
+        .contact-item {
+            font-size: 14px;
+            margin-bottom: 4px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .contact-item span:first-child {
+            color: var(--text-muted);
+        }
+
+        /* Footer & Button */
+        .footer-note {
+            margin-top: 2rem;
+            font-size: 12px;
+            color: #bdc3c7;
+            text-align: center;
+        }
+
+        .btn-back {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: 600;
+            font-size: 14px;
+            margin-top: 1.5rem;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(63, 82, 231, 0.2);
+        }
+
+        .btn-back:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(63, 82, 231, 0.3);
+        }
+
+        .btn-back:active {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="dashboard-page">
+
+  <main class="content">
+    <header class="credit-header">
+        <h2>Credit</h2>
+        <p>Detail Informasi Pengembang</p>
+    </header>
+
+    <div class="section">
+        <div class="section-title">Aplikasi</div>
+        <h3 class="app-name">SIPADU</h3>
+        <div class="app-sub">Sistem Informasi Kepegawaian Terpadu</div>
+        <div class="app-sub" style="font-weight: 600;">Versi 1.0</div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">Dikembangkan Oleh</div>
+        <ul class="team-list">
+            <li>Yasmine Dwi Anatasya P</li>
+            <li>Andi Nanis Sacharina</li>
+            <li>Merinda Riski Puspita Sari</li>
+            <li>Riby Sesharia Ramba</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <div class="section-title">Instansi</div>
+        <div style="font-weight: 600;">DPMPTSP Kota Kendari</div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">Hubungi Kami</div>
+        <div class="contact-item">
+            <span>Email</span>
+            <span>sipadu@domain.com</span>
+        </div>
+        <div class="contact-item">
+            <span>WhatsApp</span>
+            <span>08xx-xxxx-xxxx</span>
+        </div>
+    </div>
+
+    <button class="btn-back" onclick="window.history.back()">KEMBALI KE DASHBOARD</button>
+
+    <div class="footer-note">
+        © 2026 SIPADU - Kelompok KKP Ilmu Komputer Universitas Halu Oleo
+    </div>
+  </main>
+
+</body>
+</html>
