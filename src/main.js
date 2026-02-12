@@ -50,7 +50,6 @@ ipcMain.handle("save-pegawai", async (event, formData) => {
   try {
     let data = readJSON(pegawaiFile);
 
-    // Password wajib, tapi boleh kosong
     let hashedPassword = null;
     if (formData.password && formData.password.trim() !== "") {
       hashedPassword = await bcrypt.hash(formData.password, 10);
@@ -58,8 +57,7 @@ ipcMain.handle("save-pegawai", async (event, formData) => {
 
     const newPegawai = {
       ...formData,
-      password: hashedPassword,
-      foto: null
+      password: hashedPassword
     };
 
     data.push(newPegawai);
@@ -112,17 +110,6 @@ ipcMain.handle("update-user", async (event, dataInput) => {
       user.password = await bcrypt.hash(dataInput.password, 10);
     }
 
-    // Handle photo
-    if (dataInput.fileBuffer && dataInput.fileName) {
-      if (user.foto) {
-        if (fs.existsSync(oldPhoto)) fs.unlinkSync(oldPhoto);
-      }
-
-      const ext = path.extname(dataInput.fileName);
-      const newFileName = dataInput.nip + "_" + Date.now() + ext;
-      user.foto = newFileName;
-    }
-
     writeJSON(pegawaiFile, data);
     return { success: true };
   } catch (err) {
@@ -136,11 +123,6 @@ ipcMain.handle("delete-user", async (event, nip) => {
     const data = readJSON(pegawaiFile);
     const index = data.findIndex(p => String(p.nip) === String(nip));
     if (index === -1) return { success: false, error: "User tidak ditemukan" };
-
-    const user = data[index];
-    if (user.foto) {
-      if (fs.existsSync(photoPath)) fs.unlinkSync(photoPath);
-    }
 
     data.splice(index, 1);
     writeJSON(pegawaiFile, data);
@@ -203,4 +185,66 @@ ipcMain.handle("get-keluarga", async (event, nip) => {
     console.error("GET KELUARGA ERROR:", err);
     return { success: false };
   }
+});
+
+ipcMain.handle("delete-family-member", async (event, id) => {
+  try {
+    let data = readJSON(keluargaFile);
+    const index = data.findIndex(k => String(k.id) === String(id));
+    if (index === -1) return { success: false, message: "Anggota keluarga tidak ditemukan" };
+
+    data.splice(index, 1);
+    writeJSON(keluargaFile, data);
+
+    return { success: true };
+  } catch (err) {
+    console.error("DELETE FAMILY MEMBER ERROR:", err);
+    return { success: false, message: err.message };
+  }
+});
+
+ipcMain.handle("get-keluarga-by-id", async (event, id) => {
+  try {
+    const data = readJSON(keluargaFile);
+    const member = data.find(k => String(k.id) === String(id));
+    if (!member) return { success: false };
+    return { success: true, member };
+  } catch (err) {
+    console.error("GET KELUARGA BY ID ERROR:", err);
+    return { success: false };
+  }
+});
+
+ipcMain.handle("update-family-member", async (event, formData) => {
+  try {
+    const data = readJSON(keluargaFile);
+    const member = data.find(k => String(k.id) === String(formData.id));
+    if (!member) return { success: false, message: "Member tidak ditemukan" };
+
+    // update fields
+    Object.assign(member, {
+      role: formData.role,
+      nama: formData.nama,
+      tanggal_lahir: formData.tanggal_lahir,
+      jenis_kelamin: formData.jenis_kelamin,
+      pekerjaan: formData.pekerjaan,
+      tanggungan: formData.tanggungan
+    });
+
+    writeJSON(keluargaFile, data);
+    return { success: true, nip: member.nip };
+  } catch (err) {
+    console.error("UPDATE FAMILY MEMBER ERROR:", err);
+    return { success: false, message: err.message };
+  }
+});
+
+document.querySelector(".btn-urungkan").addEventListener("click", () => {
+  const params = new URLSearchParams(window.location.search);
+  const nipPegawai = params.get("nip");
+  if (!nipPegawai) {
+    alert("NIP pegawai tidak ditemukan!");
+    return;
+  }
+  window.location.href = `admin-read-data-keluarga-pegawai.html?nip=${nipPegawai}`;
 });

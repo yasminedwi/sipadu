@@ -55,25 +55,39 @@ document.addEventListener("DOMContentLoaded", function () {
       const daysLeft = getDaysUntil(pegawai.next_tmt);
       let rowColor = "";
 
-      if (daysLeft <= 14) {
+      if (daysLeft <= 30) {
         rowColor = "background-color: #ff6a6a;";
-      } else if (daysLeft <= 30) {
-        rowColor = "background-color: yellow;";
       } else if (daysLeft <= 60) {
-        rowColor = "background-color: lightgreen;";
+        rowColor = "background-color: yellow;";
       }
 
-      const row = `
-        <tr style="${rowColor}">
-          <td>${index + 1}</td>
-          <td>${pegawai.nama}</td>
-          <td>${pegawai.golongan}</td>
-          <td><strong>${formatDate(pegawai.next_tmt)}</strong></td>
-          <td>${pegawai.jabatan}</td>
-          <td>${pegawai.jenis_kelamin}</td>
-        </tr>
+      const row = document.createElement("tr");
+      row.style = rowColor;
+
+      row.innerHTML = `
+        <td>${index + 1}</td>
+        <td>${pegawai.nama}</td>
+        <td>${pegawai.golongan}</td>
+        <td><strong>${formatDate(pegawai.next_tmt)}</strong></td>
+        <td>${pegawai.jabatan}</td>
+        <td>${pegawai.jenis_kelamin}</td>
+        <td>
+          <button class="btn-done">Done</button>
+        </td>
       `;
-      tableBody.innerHTML += row;
+
+      // 👇 Done button logic
+      row.querySelector(".btn-done").addEventListener("click", () => {
+        const newDate = new Date(pegawai.next_tmt);
+        newDate.setFullYear(newDate.getFullYear() + 2);
+        pegawai.next_tmt = newDate;
+
+        // Re-sort & re-render
+        pegawaiData.sort((a, b) => a.next_tmt - b.next_tmt);
+        renderTable(pegawaiData);
+      });
+
+      tableBody.appendChild(row);
     });
   }
 

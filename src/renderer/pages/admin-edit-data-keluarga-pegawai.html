@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Data Keluarga Pegawai</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body class="dashboard-page1">
+
+  <header class="top-bar2" id="topbar">
+    <a href="all-read-dashboard.html">
+      <img src="../css/images/logo-dpmptsp-v-footer.png" class="logo-mini" alt="Logo DPMPTSP">
+    </a>
+    <img src="../css/images/Lambang_Kota_Kendari.png" class="logo-kota" alt="Logo Kota Kendari">
+    <h2>EDIT DATA KELUARGA PEGAWAI</h2>
+  </header>
+
+  <main class="content4">
+    <form id="keluargaForm">
+      <div class="form-grid">
+        <div>
+          <label>Status Anggota</label>
+          <select name="role" id="role" required>
+            <option value="">-- Pilih Status Anggota --</option>
+            <option value="suami">Suami</option>
+            <option value="istri">Istri</option>
+            <option value="anak1">Anak 1</option>
+            <option value="anak2">Anak 2</option>
+            <option value="anak3">Anak 3</option>
+            <option value="orangtua">Orang Tua</option>
+            <option value="mertua">Mertua</option>
+            <option value="saudara">Saudara</option>
+            <option value="lainnya">Lainnya</option>
+          </select>
+
+          <label>Nama</label>
+          <input type="text" name="nama" id="nama" required>
+
+          <label>Tanggal Lahir</label>
+          <input type="date" name="tanggal_lahir" id="tanggal_lahir" required>
+
+          <label>Jenis Kelamin</label>
+          <select name="jenis_kelamin" id="jenis_kelamin" required>
+            <option value="">-- Pilih Jenis Kelamin --</option>
+            <option value="Laki-laki">Laki-laki</option>
+            <option value="Perempuan">Perempuan</option>
+          </select>
+
+          <label>Pekerjaan</label>
+          <input type="text" name="pekerjaan" id="pekerjaan" required>
+
+          <label>Status Tanggungan</label>
+          <select name="tanggungan" id="tanggungan" required>
+            <option value="">-- Pilih Status Tanggungan --</option>
+            <option value="ditanggung">Ditanggung</option>
+            <option value="tidak_ditanggung">Tidak Ditanggung</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="akun-button">
+        <button type="submit" class="btn-simpan">SIMPAN</button>
+        <button type="button" class="btn-urungkan">URUNGKAN</button>
+      </div>
+    </form>
+  </main>
+
+  <script>
+    const { ipcRenderer } = require("electron");
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      const params = new URLSearchParams(window.location.search);
+      const keluargaId = params.get("id");
+      const nipPegawai = params.get("nip"); // must be in URL
+
+      if (!keluargaId || !nipPegawai) {
+        alert("ID anggota keluarga atau NIP pegawai tidak ditemukan!");
+        return;
+      }
+
+      // Load existing data
+      try {
+        const result = await ipcRenderer.invoke("get-keluarga-by-id", keluargaId);
+        if (result.success && result.member) {
+          const m = result.member;
+          document.getElementById("role").value = m.role || "";
+          document.getElementById("nama").value = m.nama || "";
+          document.getElementById("tanggal_lahir").value = m.tanggal_lahir || "";
+          document.getElementById("jenis_kelamin").value = m.jenis_kelamin || "";
+          document.getElementById("pekerjaan").value = m.pekerjaan || "";
+          document.getElementById("tanggungan").value = m.tanggungan || "";
+        } else {
+          alert("Data anggota keluarga tidak ditemukan!");
+        }
+      } catch (err) {
+        console.error("LOAD KELUARGA ERROR:", err);
+      }
+
+      // Handle form submission
+      document.getElementById("keluargaForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const formData = Object.fromEntries(new FormData(e.target).entries());
+        formData.id = keluargaId;
+
+        const result = await ipcRenderer.invoke("update-family-member", formData);
+        if (result.success) {
+          alert("Data keluarga berhasil diupdate!");
+          window.location.href = `admin-read-data-keluarga-pegawai.html?nip=${nipPegawai}`;
+        } else {
+          alert("Gagal mengupdate data keluarga: " + (result.message || ""));
+        }
+      });
+
+      // Handle URUNGKAN
+      const btnUrungkan = document.querySelector(".btn-urungkan");
+      btnUrungkan.addEventListener("click", () => {
+        window.location.href = `admin-read-data-keluarga-pegawai.html?nip=${nipPegawai}`;
+      });
+    });
+  </script>
+</body>
+</html>
